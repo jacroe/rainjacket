@@ -13,8 +13,8 @@ class View
 		$smarty = new Smarty;
 		$smarty->left_delimiter = '{{';
 		$smarty->right_delimiter = '}}';
-		$smarty->setTemplateDir("data/views/");
-		$smarty->setCompileDir("data/views_c/");
+		$smarty->setTemplateDir(DATA_PATH."views/");
+		$smarty->setCompileDir(DATA_PATH."views_c/");
 		$smarty->assign("ROOT_PATH", "//".$this->parent->rootpath);
 
 		$this->smarty = $smarty;
