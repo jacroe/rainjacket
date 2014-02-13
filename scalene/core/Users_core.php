@@ -31,7 +31,11 @@ class Users
 	public function getUser()
 	{
 		if ($this->userLoggedIn())
-			return $this->scalene->database->get("users", "`username` = '{$_SESSION["user"]}'");
+		{
+			$user = $this->scalene->database->get("users", "`username` = '{$_SESSION["user"]}'");
+			return $user[0];
+		}
+		
 		else
 			return false;
 	}

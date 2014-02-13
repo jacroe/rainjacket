@@ -2,6 +2,7 @@
 require "scalene/Scalene.php";
 
 $scalene->load->core("users");
-$data["user"] = $scalene->users->userLoggedIn();
+if ($user = $scalene->users->userLoggedIn())
+	$data["user"] = $scalene->users->getUser();
 
 $scalene->view->display("about", $data);
