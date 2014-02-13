@@ -1,3 +1,4 @@
 scalene/config.php
 data/views_c/
-rainjacket
+*.pyc
+rainjacket/apikey
