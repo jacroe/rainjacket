@@ -1,0 +1,55 @@
+<?php
+
+class Database
+{
+	private $con;
+	private $scalene;
+
+	public function __construct($scalene)
+	{
+		$this->scalene = $scalene;
+
+		foreach ($this->scalene->config["database"] as $var => $value)
+			${$var} = $value;
+
+		$this->con = new PDO("mysql:host=$server;dbname=$database;charset=utf8", $user, $pass);
+	}
+
+	public function get($table, $where = 1)
+	{
+		$query = "SELECT * FROM `$table` WHERE $where";
+		$stmt = $this->con->prepare($query);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function insert($table, $array)
+	{
+		$plainKeys = array_keys($array);
+		foreach($array as $key => $value)
+			$newArray[":$key"] = $value;
+		$newKeys = array_keys($newArray);
+
+		$query = "INSERT INTO `$table` ";
+		$query .= '(`'.implode($plainKeys, '`,`').'`) ';
+		$query .= 'VALUES ('.implode($newKeys, ', ').')';
+
+		$stmt = $this->con->prepare($query);
+		$stmt->execute($newArray);
+	}
+
+	public function delete($table, $where)
+	{
+		$query = "DELETE FROM `$table` WHERE $where";
+		$stmt = $this->con->prepare($query);
+		$stmt->execute();
+	}
+
+	public function query($query)
+	{
+		$stmt = $this->con->prepare($query);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
+}

@@ -1,0 +1,35 @@
+<?php
+
+class Email
+{
+	private $scalene;
+
+	private $smtpServer;
+	private $smtpPort;
+	private $smtpUser;
+	private $smtpPass;
+	private $smtpFrom;
+
+	public function __construct($scalene)
+	{
+		$this->scalene = $scalene;
+		foreach ($this->scalene->config["email"] as $var => $value)
+			$this->{"smtp".ucfirst($var)} = $value;
+	}
+
+	public function Send($toName, $toEmail, $subject, $body, $attachment = null)
+	{
+		require_once SCALENE_PATH."extlib/swift/swift_required.php";
+		$transport = Swift_SmtpTransport::newInstance($this->smtpServer, $this->smtpPort, 'ssl')
+		  ->setUsername($this->smtpUser)
+		  ->setPassword($this->smtpPass);
+		$mailer = Swift_Mailer::newInstance($transport);
+		$message = Swift_Message::newInstance('(no subject)')
+		  ->setFrom(array($this->smtpFrom["email"] => $this->smtpFrom["name"]))
+		  ->setTo(array($toEmail => $toName))
+		  ->setSubject($subject)
+		  ->setBody($body, 'text/html');
+		if ($attachment) $message->attach(Swift_Attachment::fromPath($attachment));
+		$result = $mailer->send($message);
+	}
+}
