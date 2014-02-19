@@ -45,6 +45,23 @@ class Database
 		$stmt->execute($newArray);
 	}
 
+	public function update($table, $array, $where = 1)
+	{
+		$plainKeys = array_keys($array);
+		foreach($array as $key => $value)
+			$newArray[":$key"] = $value;
+		$newKeys = array_keys($newArray);
+
+		$query = "UPDATE `$table` SET ";
+		foreach ($plainKeys as $k)
+			$fields[] = "`$k`=:$k";
+		$query .= implode($fields, ", ");
+		$query .= " WHERE $where";
+
+		$stmt = $this->con->prepare($query);
+		$stmt->execute($newArray);
+	}
+
 	public function delete($table, $where)
 	{
 		$query = "DELETE FROM `$table` WHERE $where";

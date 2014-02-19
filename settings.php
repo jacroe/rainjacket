@@ -1,12 +1,24 @@
 <?php
 require "scalene/Scalene.php";
 $scalene->load->core("users");
+$scalene->load->helper("validator");
 
 if (!$user = $scalene->users->userLoggedIn())
 	header("Location: login.php");
 
 if ($_POST)
-	$data["errors"][] = array("title"=>"Changing information disabled", "body"=>"Right now, we're not allowing user details to be edited. If you need your information updated, email me at <a href=\"mailto:jacob@jacroe.com\" class=\"alert-link\">jacob@jacroe.com</a>.");
+{
+	if (!validate_email($_POST["email"]))
+		$data["errors"][] = array("title"=>"Email invalid", "body"=>"Please enter a valid email.");
+	if (!validate_zipcode($_POST["zipcode"]))
+		$data["errors"][] = array("title"=>"Zipcode invalid", "body"=>"Please enter a valid US zipcode.");
+	if (empty($data["errors"]))
+	{
+		$scalene->database->update("users", array("zipcode"=>$_POST["zipcode"], "email"=>$_POST["email"]), "username = '$user'");
+		$data["errors"][] = array("title"=>"Done!", "body"=>"Those settings were updated like a boss.", "type"=>"success");
+	}
+
+}
 
 $data["user"] = $scalene->users->getUser();
 $data["user"]["time"] = date("g:iA", strtotime($data["user"]["time"]));
