@@ -12,7 +12,14 @@ class Database
 		foreach ($this->scalene->config["database"] as $var => $value)
 			${$var} = $value;
 
-		$this->con = new PDO("mysql:host=$server;dbname=$database;charset=utf8", $user, $pass);
+		try
+		{
+			$this->con = new PDO("mysql:host=$server;dbname=$database;charset=utf8", $user, $pass);
+		}
+		catch(PDOException $e)
+		{
+			die("Could not connect to database. Message given: ".$e->getMessage());
+		}
 	}
 
 	public function get($table, $where = 1)
