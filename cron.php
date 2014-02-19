@@ -24,8 +24,13 @@ if (!empty($users))
 	{
 		$location = $scalene->database->get("zipcodes", "zipcode = '{$user["zipcode"]}'");
 		$forecast = $scalene->rainjacket->GetForecast($location[0]["lat"], $location[0]["lng"]);
+
+		$data["forecast"] = $forecast;
+		$data["city"] = $location[0]["city"];
+		$data["state"] = $location[0]["state"];
+		$body = $scalene->view->fetch("email", $data);
 		echo "\tEmailing {$user["username"]} their forecast for {$location[0]["city"]}, {$location[0]["state"]}...";
-		$scalene->email->send($user["username"], $user["email"], "Forecast for Today", $forecast);
+		$scalene->email->send($user["username"], $user["email"], "Forecast for Today", $body);
 		echo "done!\n";
 	}
 }
