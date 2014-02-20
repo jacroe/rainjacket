@@ -24,7 +24,7 @@
 				<div class="form-group">
 					<label for="emailSend" class="col-sm-3 control-label">You wakeup at </label>
 					<div class="col-sm-9">
-						<input type="text" name="emailSendTime" class="form-control" id="emailSend" placeholder="8:00AM" value="{{$user.time}}" readonly />
+						<input type="text" name="emailSendTime" class="form-control" id="emailSend" placeholder="8:00AM" value="{{$user.time}}" />
 					</div>
 				</div>
 				<div class="form-group">

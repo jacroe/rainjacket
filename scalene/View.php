@@ -15,6 +15,7 @@ class View
 		$smarty->right_delimiter = '}}';
 		$smarty->setTemplateDir(DATA_PATH."views/");
 		$smarty->setCompileDir(DATA_PATH."views_c/");
+		$smarty->escape_html = true;
 		$smarty->assign("ROOT_PATH", "//".$this->parent->rootpath);
 
 		$this->smarty = $smarty;

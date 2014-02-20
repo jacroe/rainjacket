@@ -12,13 +12,13 @@
 				<div class="form-group">
 					<label for="username" class="col-sm-3 control-label">Username</label>
 					<div class="col-sm-9">
-						<input type="text" name="username" class="form-control" id="username" placeholder="Username" />
+						<input type="text" name="username" class="form-control" id="username" placeholder="Username" {{if $submitted.username}}value="{{$submitted.username}}"{{/if}} />
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="email" class="col-sm-3 control-label">Email</label>
 					<div class="col-sm-9">
-						<input type="email" name="email" class="form-control" id="email" placeholder="Email" />
+						<input type="email" name="email" class="form-control" id="email" placeholder="Email" {{if $submitted.email}}value="{{$submitted.email}}"{{/if}} />
 					</div>
 				</div>
 				<div class="form-group">

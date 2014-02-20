@@ -5,7 +5,7 @@ $data = array();
 if ($_POST["username"])
 {
 	$scalene->load->core("users");
-	if ($scalene->users->register($_POST["username"], $_POST["email"], $_POST["password"], array("zipcode"=>39402, "time"=>"0800")))
+	if ($scalene->users->register($_POST["username"], $_POST["email"], $_POST["password"], array("zipcode"=>39406, "time"=>"0800")))
 	{
 		$scalene->view->display("registerGood");
 		die();
@@ -14,6 +14,8 @@ if ($_POST["username"])
 	{
 		if ($scalene->users->errors)
 			$data["errors"] = register_UnderstandErrors($scalene->users->errors);
+		else
+			$data["errors"][] = array("title"=>"Unknown error", "body"=>"Some unknown error occured and you were not able to be registered. You can try re-submitting or get in touch with <a href=\"mailto:jacob@jacroe.com\" class=\"alert-link\">Jacob</a>.");
 		$data["submitted"] = array("username"=>$_POST["username"], "email"=>$_POST["email"]);
 	}
 }

@@ -15,8 +15,8 @@ def crunchHighsLows(hourlyData):
 			lo = curHour["temperature"]
 			loTime = curHour["time"]
 	return dict(
-		hi=dict(temp=int(round(hi)), timestamp=hiTime, timeString=strftime("%I%p", localtime(hiTime))),
-		lo=dict(temp=int(round(lo)), timestamp=loTime, timeString=strftime("%I%p", localtime(loTime))) )
+		hi=dict(temp=int(round(hi)), timestamp=hiTime),
+		lo=dict(temp=int(round(lo)), timestamp=loTime) )
 
 def crunchChanceOfRain(hourlyData):
 	tomorrow = datetime.combine(date.today(), time.min) + timedelta(days=1)
