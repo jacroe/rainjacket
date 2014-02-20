@@ -10,7 +10,7 @@ def rainjacketTemplate(isDay, isPrecip, isStopping):
 	else:
 		if isPrecip:
 			if isStopping:
-				return "Lows tonight will be in the $temp$. $topPrecipType$ from $startPrecipTime$ to $topPrecipTime$. Sounds like perfect cuddling weather."
+				return "Lows tonight will be in the $temp$. $topPrecipType$ from $startPrecipTime$ to $endPrecipTime$. Sounds like perfect cuddling weather."
 			else:
 				return "Lows tonight will be in the $temp$. $topPrecipType$ from $startPrecipTime$ and continuing throughout the night. Sounds like great cuddling weather."
 		else:
