@@ -37,7 +37,7 @@ class Rainjacket
 		}
 	}
 
-	public function GetForecast($lat, $long, $isDay)
+	public function GetForecast($lat, $long, $isDay = true)
 	{
 		$dataJson = json_decode(exec("python ".BASE_PATH."/rainjacket/rainjacket.py $lat $long"));
 
