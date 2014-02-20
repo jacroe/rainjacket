@@ -3,7 +3,7 @@ from forecastio import *
 from forecastCrunch import *
 from forecastPretty import *
 from forecastTemplate import *
-import sys
+import sys, json
 
 # ------------------------------
 
@@ -31,7 +31,7 @@ dictHighsLows = crunchHighsLows(f.getHourlyData())
 dictPrecip = crunchChanceOfRain(f.getHourlyData())
 
 
-if isDay:
+"""if isDay:
 	temp = dict(
 		temp=prettyTemp(dictHighsLows["hi"]["temp"]),
 		adj=prettyTempAdj(dictHighsLows["hi"]["temp"])
@@ -41,8 +41,8 @@ else:
 		temp=prettyTemp(dictHighsLows["lo"]["temp"]),
 		adj=prettyTempAdj(dictHighsLows["lo"]["temp"])
 	)
+"""
 
-dataDict = dict(temp=temp, precipitation=dictPrecip)
+dataDict = dict(temp=dictHighsLows, precipitation=dictPrecip)
 
-#print dataDict
-print prettyOutput(dataDict, isDay)
+print json.dumps(dataDict)

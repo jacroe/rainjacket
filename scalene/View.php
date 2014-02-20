@@ -33,6 +33,14 @@ class View
 		return $this->smarty->fetch("$file.tpl");
 	}
 
+	public function string($string, $vars=null)
+	{
+		if ($vars)
+			$this->smarty->assign($vars);
+
+		return $this->smarty->fetch("string:$string");
+	}
+
 	public function assign($key, $value)
 	{
 		$this->smarty->assign($key, $value);
