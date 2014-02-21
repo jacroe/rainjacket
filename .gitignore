@@ -2,3 +2,5 @@ scalene/config.php
 data/views_c/
 *.pyc
 rainjacket/apikey
+
+*.sublime*

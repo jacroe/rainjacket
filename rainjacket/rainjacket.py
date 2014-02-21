@@ -1,8 +1,6 @@
 from time import strftime, localtime
 from forecastio import *
 from forecastCrunch import *
-from forecastPretty import *
-from forecastTemplate import *
 import sys, json
 
 # ------------------------------
