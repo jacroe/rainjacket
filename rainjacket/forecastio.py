@@ -1,10 +1,10 @@
 import json, requests
 
 class Forecastio():
-"""Get the latest data from Forecastio and create functions for handling it."""
+	"""Get the latest data from Forecastio and create functions for handling it."""
 
 	def __init__(self, apikey, latitude, longitude):
-	"""Do the actual lookup and make sure we have a good request."""
+		"""Do the actual lookup and make sure we have a good request."""
 		self.__url = "https://api.forecast.io/forecast/" + apikey + "/" + str(latitude) + "," + str(longitude)
 		r = requests.get(self.__url)
 
@@ -15,44 +15,44 @@ class Forecastio():
 			self.__weGood = False
 
 	def url(self):
-	"""Return the url we used."""
+		"""Return the url we used."""
 		return self.__url
 
 	def weGood(self):
-	"""Return if it was a good lookup or not."""
+		"""Return if it was a good lookup or not."""
 		return self.__weGood
 
 	def getMinutelyData(self):
-	"""Get the minutely data array."""
+		"""Get the minutely data array."""
 		return self.__forecastioData["minutely"]["data"]
 	def getMinutelySum(self):
-	"""Get the summary of the minutely report."""
+		"""Get the summary of the minutely report."""
 		return self.__forecastioData["minutely"]["summary"]
 
 	def getDailyData(self):
-	"""Get the daily data array."""
+		"""Get the daily data array."""
 		return self.__forecastioData["daily"]["data"]
 	def getDailySum(self):
-	"""Get the daily data summary."""
+		"""Get the daily data summary."""
 		return self.__forecastioData["daily"]["summary"]
 
 	def getHourlyData(self):
-	"""Get the hourly data array."""
+		"""Get the hourly data array."""
 		return self.__forecastioData["hourly"]["data"]
 	def getHourlySum(self):
-	"""Get the hourly data summary."""
+		"""Get the hourly data summary."""
 		return self.__forecastioData["hourly"]["summary"]
 
 	def getTodayData(self):
-	"""From the hourly data, get today's (entry 0)."""
+		"""From the hourly data, get today's (entry 0)."""
 		return self.getDailyData()[0]
 
 	def getCurrent(self):
-	"""Return the currently string provided by Forecastio."""
+		"""Return the currently string provided by Forecastio."""
 		return self.__forecastioData["currently"]
 
 	def getAlerts(self):
-	"""If there are any alerts, return that block. Else, return false."""
+		"""If there are any alerts, return that block. Else, return false."""
 		if "alerts" in self.__forecastioData:
 			return self.__forecastioData["alerts"]
 		else:
