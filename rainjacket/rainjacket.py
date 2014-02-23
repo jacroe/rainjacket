@@ -10,21 +10,24 @@ apikey, latitude, longitude = "abc1234", 31.327119, -89.290339 # Hattiesburg
 #latitude, longitude = 34.113383, -118.404133 # Beverly Hills
 # ------------------------------
 
+"""If we are provided with coordinates, use those."""
 if len(sys.argv) is 3:
 	latitude, longitude = sys.argv[1], sys.argv[2]
 
-if int(strftime("%H", localtime())) <= 12:
+"""if int(strftime("%H", localtime())) <= 12:
 	isDay = True
 else:
 	isDay = False
+"""
 
-
+"""Do the lookup and make sure it was a good request."""
 f = Forecastio(apikey, latitude, longitude)
 #print f.url()
 if not f.weGood():
 	print "Could not get Forecast.io data."
 	quit(1)
 
+"""Crunch the highs and lows, precipitation."""
 dictHighsLows = crunchHighsLows(f.getHourlyData())
 dictPrecip = crunchChanceOfRain(f.getHourlyData())
 
@@ -41,6 +44,8 @@ else:
 	)
 """
 
+"""Form a new dict with the aforementioned crunched data."""
 dataDict = dict(temp=dictHighsLows, precipitation=dictPrecip)
 
+"""Convert to JSON and print."""
 print json.dumps(dataDict)

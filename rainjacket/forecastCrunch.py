@@ -2,6 +2,7 @@ from time import strftime, gmtime, localtime
 from datetime import datetime, date, time, timedelta
 
 def crunchHighsLows(hourlyData):
+	"""Return a dict of the highs and lows of the day along with the unix epoch of the hour they occur."""
 	tomorrow = datetime.combine(date.today(), time.min) + timedelta(days=1)
 	lo, hi = None, None
 	for i in range(0, len(hourlyData)):
@@ -19,6 +20,12 @@ def crunchHighsLows(hourlyData):
 		lo=dict(temp=int(round(lo)), timestamp=loTime) )
 
 def crunchChanceOfRain(hourlyData):
+	"""
+	Return a dict that describes the precipitation when it starts, when it ends, and when it reaches its peak.
+
+	For when it starts and peaks, it gives the probability, the unix epoch, the type, and the intensity.
+	For when it ends, it retuns only the unix epoch.
+	"""
 	tomorrow = datetime.combine(date.today(), time.min) + timedelta(days=1)
 	topPrecipChance = 0
 	startTime = False
