@@ -32,7 +32,7 @@ class Rainjacket
 	{
 		$scalene = $this->_scalene;
 
-		$todoZips = $scalene->database->query("SELECT zipcode FROM `users` WHERE zipcode NOT IN (SELECT zipcode FROM `zipcodes` WHERE 1) GROUP BY zipcode");
+		$todoZips = $scalene->database->query("SELECT zipcode FROM `users` WHERE zipcode NOT IN (SELECT zipcode FROM `zipcodes` WHERE 1) GROUP BY zipcode");	// Selects all zips that aren't already in the cache
 		foreach ($todoZips as $zip)
 		{
 			$location = $this->_LocationLookup($zip["zipcode"]);
@@ -88,6 +88,7 @@ class Rainjacket
 	private function _LocationLookup($zip)
 	{
 		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=$zip&sensor=false"));
+
 		foreach ($json->results[0]->address_components as $comp)
 		{
 			if (in_array("locality", $comp->types))
@@ -167,6 +168,8 @@ class Rainjacket
 	 */
 	private function _PrettyTempAdj($temp)
 	{
+		# Just like we do with the templates, we'll probabily have a dictionary of terms available for each range
+
 		if ($temp >= 90)
 			return "bloody hot";
 		elseif ($temp >= 80)
