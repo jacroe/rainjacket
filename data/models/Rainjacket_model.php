@@ -13,7 +13,7 @@ class Rainjacket
 	 * Stored instance of the Scalene class
 	 * @var Scalene()
 	 */
-	private $scalene;
+	private $_scalene;
 
 	/**
 	 * Class constructor
@@ -21,30 +21,7 @@ class Rainjacket
 	 */
 	public function __construct($scalene)
 	{
-		$this->scalene = $scalene;
-	}
-
-	/**
-	 * Returns address information of a requested zipcode by using the Google Maps Geocoding API
-	 * @param  int $zip Zipcode to lookup
-	 * @return array    An array of the response featuring city (city), state (state), latitude (lat)
-	 *                  longitude (ng), and zipcode (zipcode)
-	 */
-	public function LocationLookup($zip)
-	{
-		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=$zip&sensor=false"));
-		foreach ($json->results[0]->address_components as $comp)
-		{
-			if (in_array("locality", $comp->types))
-				$loc["city"] = $comp->long_name;
-			if (in_array("administrative_area_level_1", $comp->types))
-				$loc["state"] = $comp->short_name;
-		}
-
-		$loc["lat"] = $json->results[0]->geometry->location->lat;
-		$loc["lng"] = $json->results[0]->geometry->location->lng;
-		$loc["zipcode"] = $zip;
-		return $loc;
+		$this->_scalene = $scalene;
 	}
 
 	/**
@@ -53,12 +30,12 @@ class Rainjacket
 	 */
 	public function AddZipsToDatabase()
 	{
-		$scalene = $this->scalene;
+		$scalene = $this->_scalene;
 
 		$todoZips = $scalene->database->query("SELECT zipcode FROM `users` WHERE zipcode NOT IN (SELECT zipcode FROM `zipcodes` WHERE 1) GROUP BY zipcode");
 		foreach ($todoZips as $zip)
 		{
-			$location = $this->LocationLookup($zip["zipcode"]);
+			$location = $this->_LocationLookup($zip["zipcode"]);
 			$scalene->database->insert("zipcodes", $location);
 		}
 	}
@@ -79,27 +56,50 @@ class Rainjacket
 		else
 			$temp = $dataJson->temp->lo->temp;
 
-		$replace = array("tempAdj"=>$this->prettyTempAdj($temp), "temp"=>$this->prettyTemp($temp));
+		$replace = array("tempAdj"=>$this->_PrettyTempAdj($temp), "temp"=>$this->_PrettyTemp($temp));
 
 		if ($dataJson->precipitation)
 		{
-			$replace["topPrecipType"] = $this->prettyPrecipType($dataJson->precipitation->top->type, $dataJson->precipitation->top->intensity);
-			$replace["topPrecipTime"] = $this->prettyTime($dataJson->precipitation->top->time);
-			$replace["topPrecipChance"] = $this->prettyPrecipChance($dataJson->precipitation->top->chance);
+			$replace["topPrecipType"] = $this->_PrettyPrecipType($dataJson->precipitation->top->type, $dataJson->precipitation->top->intensity);
+			$replace["topPrecipTime"] = $this->_PrettyTime($dataJson->precipitation->top->time);
+			$replace["topPrecipChance"] = $this->_PrettyPrecipChance($dataJson->precipitation->top->chance);
 
-			$replace["startPrecipType"] = $this->prettyPrecipType($dataJson->precipitation->start->type, $dataJson->precipitation->start->intensity);
-			$replace["startPrecipTime"] = $this->prettyTime($dataJson->precipitation->start->time);
-			$replace["startPrecipChance"] = $this->prettyPrecipChance($dataJson->precipitation->start->chance);
+			$replace["startPrecipType"] = $this->_PrettyPrecipType($dataJson->precipitation->start->type, $dataJson->precipitation->start->intensity);
+			$replace["startPrecipTime"] = $this->_PrettyTime($dataJson->precipitation->start->time);
+			$replace["startPrecipChance"] = $this->_PrettyPrecipChance($dataJson->precipitation->start->chance);
 
-			$replace["endPrecipTime"] = $this->prettyTime($dataJson->precipitation->endTime);
+			$replace["endPrecipTime"] = $this->_PrettyTime($dataJson->precipitation->endTime);
 
-			$template = $this->getTemplate($isDay, (boolean)$dataJson->precipitation->start->chance, (boolean)$dataJson->precipitation->endTime);
+			$template = $this->_GetTemplate($isDay, (boolean)$dataJson->precipitation->start->chance, (boolean)$dataJson->precipitation->endTime);
 		}
 		else
-			$template = $this->getTemplate($isDay, false, false);
+			$template = $this->_GetTemplate($isDay, false, false);
 
-		return $this->scalene->view->string($template, $replace);
+		return $this->_scalene->view->string($template, $replace);
 
+	}
+
+	/**
+	 * Returns address information of a requested zipcode by using the Google Maps Geocoding API
+	 * @param  int $zip Zipcode to lookup
+	 * @return array    An array of the response featuring city (city), state (state), latitude (lat)
+	 *                  longitude (ng), and zipcode (zipcode)
+	 */
+	private function _LocationLookup($zip)
+	{
+		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=$zip&sensor=false"));
+		foreach ($json->results[0]->address_components as $comp)
+		{
+			if (in_array("locality", $comp->types))
+				$loc["city"] = $comp->long_name;
+			if (in_array("administrative_area_level_1", $comp->types))
+				$loc["state"] = $comp->short_name;
+		}
+
+		$loc["lat"] = $json->results[0]->geometry->location->lat;
+		$loc["lng"] = $json->results[0]->geometry->location->lng;
+		$loc["zipcode"] = $zip;
+		return $loc;
 	}
 
 	/**
@@ -110,9 +110,9 @@ class Rainjacket
 	 * @param  boolean $isStopping Is it going to stop before the day ends
 	 * @return string              The template from the
 	 */
-	private function getTemplate($isDay, $isPrecip, $isStopping)
+	private function _GetTemplate($isDay, $isPrecip, $isStopping)
 	{
-		$templates = $this->scalene->database->get("templates",
+		$templates = $this->_scalene->database->get("templates",
 			"`isDay` = ".(int)$isDay." and ".
 			"`isPrecip` = ".(int)$isPrecip." and ".
 			"`isStopping` = ".(int)$isStopping
@@ -125,7 +125,7 @@ class Rainjacket
 	 * @param  int $temp    The temperature
 	 * @return string       The English'd temperature
 	 */
-	private function prettyTemp($temp)
+	private function _PrettyTemp($temp)
 	{
 		if ((int)substr($temp, -1) < 4)
 			$loMidHi = "low ";
@@ -141,7 +141,7 @@ class Rainjacket
 	 * @param  int $time    The unix epoch to format
 	 * @return string       The formatted time
 	 */
-	private function prettyTime($time)
+	private function _PrettyTime($time)
 	{
 		$hour = date("g", $time);
 		$minute = date("i", $time);
@@ -165,7 +165,7 @@ class Rainjacket
 	 * @param  int $temp    The temperature
 	 * @return string       The adjective describing the temperature.
 	 */
-	private function prettyTempAdj($temp)
+	private function _PrettyTempAdj($temp)
 	{
 		if ($temp >= 90)
 			return "bloody hot";
@@ -192,7 +192,7 @@ class Rainjacket
 	 * @param  float $intensity  Precipitation intensity
 	 * @return string            The corresponding word or phrase
 	 */
-	private function prettyPrecipType($type, $intensity)
+	private function _PrettyPrecipType($type, $intensity)
 	{
 		$types = array(
 			"rain"=>array("drizzle", "light rain", "rain", "heavy rain"),
@@ -218,7 +218,7 @@ class Rainjacket
 	 * @param  float $chance  The chance precipitation might occur (between 0 and 1)
 	 * @return string         An English'd chance based on the Wikipedia article below
 	 */
-	private function prettyPrecipChance($chance)
+	private function _PrettyPrecipChance($chance)
 	{
 		// https://en.wikipedia.org/wiki/Probability_of_precipitation
 
