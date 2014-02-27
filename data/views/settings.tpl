@@ -10,25 +10,31 @@
 {{/foreach}}
 			<form class="form-horizontal" role="form" method="POST">
 				<div class="form-group">
-					<label for="email" class="col-sm-3 control-label">Your email is </label>
-					<div class="col-sm-9">
+					<label for="email" class="col-sm-4 control-label">Your email is </label>
+					<div class="col-sm-8">
 						<input type="email" name="email" class="form-control" id="email" placeholder="Email" value="{{$user.email}}" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="zipcode" class="col-sm-3 control-label">Your zipcode is </label>
-					<div class="col-sm-9">
+					<label for="zipcode" class="col-sm-4 control-label">Your zipcode is </label>
+					<div class="col-sm-8">
 						<input type="text" name="zipcode" class="form-control" id="zipcode" placeholder="Zipcode" value="{{$user.zipcode}}"/>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="emailSend" class="col-sm-3 control-label">You wakeup at </label>
-					<div class="col-sm-9">
-						<input type="text" name="emailSendTime" class="form-control" id="emailSend" placeholder="8:00AM" value="{{$user.time}}" />
+					<label for="emailDaySendTime" class="col-sm-4 control-label">You wakeup around </label>
+					<div class="col-sm-8">
+						<input type="text" name="emailDaySendTime" class="form-control" id="emailDaySendTime" placeholder="8:00AM" value="{{$user.dayTime}}" />
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-3 col-sm-9">
+					<label for="emailNightSendTime" class="col-sm-4 control-label">You leave work around </label>
+					<div class="col-sm-8">
+						<input type="text" name="emailNightSendTime" class="form-control" id="emailNightSendTime" placeholder="8:00AM" value="{{$user.nightTime}}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-8">
 						<button type="submit" class="btn btn-default">Update</button>
 					</div>
 				</div>
