@@ -31,12 +31,13 @@
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="about.php">About</a></li>      
 {{if $user.username}}
 				<li><a href="settings.php">Settings</a></li>
+				<li><a href="about.php">About</a></li>
 				<li><a href="logout.php">Logout</a></li>
 {{else}}
 				<li><a href="login.php">Login</a></li>
+				<li><a href="about.php">About</a></li>
 {{/if}}
 			</ul>
 		</div><!-- /.navbar-collapse -->

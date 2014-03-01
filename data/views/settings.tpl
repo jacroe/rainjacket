@@ -18,7 +18,7 @@
 				<div class="form-group">
 					<label for="zipcode" class="col-sm-4 control-label">Your zipcode is </label>
 					<div class="col-sm-8">
-						<input type="text" name="zipcode" class="form-control" id="zipcode" placeholder="Zipcode" value="{{$user.zipcode}}"/>
+						<input type="text" name="zipcode" class="form-control" id="zipcode" placeholder="Zipcode" value="{{$user.zipcode}}" />
 					</div>
 				</div>
 				<div class="form-group">
