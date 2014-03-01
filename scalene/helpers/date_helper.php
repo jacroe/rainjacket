@@ -63,3 +63,14 @@ if (!function_exists("date_day"))
 			return date("j", $time);
 	}
 }
+
+if (!function_exists("date_timezoneConvert"))
+{
+	function date_timezoneConvert($time, $convertTo = "UTC", $format = "Hi")
+	{
+		$tz = new DateTimeZone($convertTo);
+		$newDateTime = neW DateTime($time);
+		$newDateTime->setTimeZone($tz);
+		return $newDateTime->format($format);
+	}
+}

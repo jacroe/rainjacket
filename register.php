@@ -5,7 +5,7 @@ $data = array();
 if ($_POST["username"])
 {
 	$scalene->load->core("users");
-	if ($scalene->users->register($_POST["username"], $_POST["email"], $_POST["password"], array("zipcode"=>39406, "dayTime"=>"0800", "nightTime"=>"1700")))
+	if ($scalene->users->register($_POST["username"], $_POST["email"], $_POST["password"], array("zipcode"=>39406, "dayTime"=>"1400", "nightTime"=>"2300")))
 	{
 		$scalene->view->display("registerGood");
 		die();

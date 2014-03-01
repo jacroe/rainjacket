@@ -2,6 +2,7 @@
 require "scalene/Scalene.php";
 $scalene->load->core("users");
 $scalene->load->helper("validator");
+$scalene->load->helper("date");
 
 if (!$user = $scalene->users->userLoggedIn())
 	header("Location: login.php");
@@ -19,14 +20,14 @@ if ($_POST)
 		$scalene->database->update("users", array(
 			"zipcode"=>$_POST["zipcode"],
 			"email"=>$_POST["email"],
-			"dayTime"=>date("Hi", strtotime($_POST["emailDaySendTime"])),
-			"nightTime"=> date("Hi", strtotime($_POST["emailNightSendTime"]))
+			"dayTime"=>date_timezoneConvert($_POST["emailDaySendTime"]." ".$data["user"]["timezone"]),
+			"nightTime"=>date_timezoneConvert($_POST["emailNightSendTime"]." ".$data["user"]["timezone"])
 		), "username = '$user'");
 		$data["errors"][] = array("title"=>"Done!", "body"=>"Those settings were updated like a boss.", "type"=>"success");
 	}
 }
 
 $data["user"] = $scalene->users->getUser();
-$data["user"]["dayTime"] = date("g:iA", strtotime($data["user"]["dayTime"]));
-$data["user"]["nightTime"] = date("g:iA", strtotime($data["user"]["nightTime"]));
+$data["user"]["dayTime"] = date_timezoneConvert($data["user"]["dayTime"]." UTC", $data["user"]["timezone"], "g:iA");
+$data["user"]["nightTime"] = date_timezoneConvert($data["user"]["nightTime"]." UTC", $data["user"]["timezone"], "g:iA");
 $scalene->view->display("settings", $data);

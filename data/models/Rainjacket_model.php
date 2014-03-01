@@ -36,6 +36,7 @@ class Rainjacket
 		foreach ($todoZips as $zip)
 		{
 			$location = $this->_LocationLookup($zip["zipcode"]);
+			$location["timezone"] = $this->_TimezoneLookup($location["lat"], $location["lng"]);
 			$scalene->database->insert("zipcodes", $location);
 		}
 	}
@@ -101,6 +102,19 @@ class Rainjacket
 		$loc["lng"] = $json->results[0]->geometry->location->lng;
 		$loc["zipcode"] = $zip;
 		return $loc;
+	}
+
+	/**
+	 * Returns the timezone of a latitude and longitude position
+	 * @param  float  $lat Latitude
+	 * @param  float  $lng Longitude
+	 * @return string      The timezone ID, e.g. "America/Chicago"
+	 */
+	private function _TimezoneLookup($lat, $lng)
+	{
+		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/timezone/json?location=$lat,$lng&sensor=false&timestamp=".time()));
+
+		return $json->timeZoneId;
 	}
 
 	/**

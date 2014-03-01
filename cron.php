@@ -2,6 +2,8 @@
 require "scalene/Scalene.php";
 $scalene->load->model("rainjacket");
 $scalene->load->helper("strings");
+
+date_default_timezone_set("UTC");
 $now = date('Hi');
 echo "
  ____       _      ___   _   _       _      _       ____   _  __  _____   _____ 
