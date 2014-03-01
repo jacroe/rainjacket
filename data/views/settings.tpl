@@ -22,6 +22,21 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="timezone" class="col-sm-4 control-label">Your timezone is </label>
+					<div class="col-sm-8">
+						<select class="form-control" name="timezone" id="timezone">
+							<option value="America/New_York"{{if $user.timezone == "America/New_York"}} selected{{/if}}>Eastern</option>
+							<option value="America/Chicago"{{if $user.timezone == "America/Chicago"}} selected{{/if}}>Central</option>
+							<option value="America/Denver"{{if $user.timezone == "America/Denver"}} selected{{/if}}>Mountain</option>
+							<option value="America/Phoenix"{{if $user.timezone == "America/Phoenix"}} selected{{/if}}>Mountain (no DST)</option>
+							<option value="America/Los_Angeles"{{if $user.timezone == "America/Los_Angeles"}} selected{{/if}}>Pacific</option>
+							<option value="America/Anchorage"{{if $user.timezone == "America/Anchorage"}} selected{{/if}}>Alaska</option>
+							<option value="America/Adak"{{if $user.timezone == "America/Adak"}} selected{{/if}}>Hawaii</option>
+							<option value="Pacific/Honolulu"{{if $user.timezone == "Pacific/Honolulu"}} selected{{/if}}>Hawaii (no DST)</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
 					<label for="emailDaySendTime" class="col-sm-4 control-label">You wakeup around </label>
 					<div class="col-sm-8">
 						<input type="text" name="emailDaySendTime" class="form-control" id="emailDaySendTime" placeholder="8:00AM" value="{{$user.dayTime}}" />
@@ -41,4 +56,25 @@
 			</form>
 		</div>
 	</div>
+	<script>
+		window.onload = function()
+		{
+			$("#zipcode").blur(function()
+			{
+				if (/(^\d{5}$)|(^\d{5}-\d{4}$)/.test($("#zipcode").val()))
+				{
+					$.getJSON("https://maps.googleapis.com/maps/api/geocode/json?address=" + $("#zipcode").val() + "&sensor=false").done(function(data)
+					{
+						var lat = data.results[0].geometry.location.lat;
+						var lng = data.results[0].geometry.location.lng;
+
+						$.getJSON("https://maps.googleapis.com/maps/api/timezone/json?location=" + lat + "," + lng + "&sensor=false&timestamp=" + Math.round(new Date().getTime() / 1000)).done(function(data)
+						{
+							$("#timezone").val(data.timeZoneId);
+						});
+					});
+				}
+			});
+		}
+	</script>
 {{include file="footer.tpl"}}

@@ -18,10 +18,11 @@ if ($_POST)
 	if (empty($data["errors"]))
 	{
 		$scalene->database->update("users", array(
-			"zipcode"=>$_POST["zipcode"],
 			"email"=>$_POST["email"],
-			"dayTime"=>date_timezoneConvert($_POST["emailDaySendTime"]." ".$data["user"]["timezone"]),
-			"nightTime"=>date_timezoneConvert($_POST["emailNightSendTime"]." ".$data["user"]["timezone"])
+			"zipcode"=>$_POST["zipcode"],
+			"timezone"=>$_POST["timezone"],
+			"dayTime"=>date_timezoneConvert($_POST["emailDaySendTime"]." ".$_POST["timezone"]),
+			"nightTime"=>date_timezoneConvert($_POST["emailNightSendTime"]." ".$_POST["timezone"])
 		), "username = '$user'");
 		$data["errors"][] = array("title"=>"Done!", "body"=>"Those settings were updated like a boss.", "type"=>"success");
 	}
