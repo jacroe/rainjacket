@@ -1,6 +1,7 @@
 <?php
 require "scalene/Scalene.php";
 $scalene->load->model("rainjacket");
+$scalene->load->model("twilio");
 $scalene->load->helper("strings");
 
 date_default_timezone_set("UTC");
@@ -24,18 +25,31 @@ if (!empty($users))
 	echo "Starting to email ".count($users)." ".pluralize(count($users), "customer", "customers")."...\n";
 	foreach ($users as $user)
 	{
+		date_default_timezone_set($user["timezone"]);
 		$location = $scalene->database->get("zipcodes", "zipcode = '{$user["zipcode"]}'");
+		$location = $location[0];
 		if ($user["dayTime"] == $now)
-			$forecast = $scalene->rainjacket->GetForecast($location[0]["lat"], $location[0]["lng"]);
+		{
+			$forecast = $scalene->rainjacket->GetForecast($location["lat"], $location["lng"]);
+			$data["isDay"] = true;
+		}
 		else
-			$forecast = $scalene->rainjacket->GetForecast($location[0]["lat"], $location[0]["lng"], false);
+		{
+			$forecast = $scalene->rainjacket->GetForecast($location["lat"], $location["lng"], false);
+			$data["isDay"] = false;
+		}
 
 		$data["forecast"] = $forecast;
-		$data["city"] = $location[0]["city"];
-		$data["state"] = $location[0]["state"];
+		$data["city"] = $location["city"];
+		$data["state"] = $location["state"];
+		
 		$body = $scalene->view->fetch("email", $data);
-		echo "\tEmailing {$user["username"]} their forecast for {$location[0]["city"]}, {$location[0]["state"]}...";
+		echo "\tEmailing {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
 		$scalene->email->send($user["username"], $user["email"], "Forecast for Today", $body);
+		echo "done!\n";
+
+		echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
+		$scalene->twilio->SendText($user["phone"], $forecast);
 		echo "done!\n";
 	}
 }

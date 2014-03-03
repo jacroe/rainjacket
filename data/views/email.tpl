@@ -12,7 +12,7 @@
 		<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
 			<tr>
 				<td align="center" valign="top">
-					<table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer">
+					<table border="0" cellpadding="20" cellspacing="0" width="600px" id="emailContainer">
 						<tr>
 							<td align="center" valign="top">
 								<table border="0" cellpadding="20" cellspacing="0" width="100%" id="emailHeader">
@@ -29,7 +29,7 @@
 								<table border="0" cellpadding="20" cellspacing="0" width="100%" id="emailBody">
 									<tr>
 										<td align="center" valign="top">
-											<p><strong>Your morning forecast for {{$city}}, {{$state}}</strong></p>
+											<p><strong>Your {{if $isDay}}morning{{else}}evening{{/if}} forecast for {{$city}}, {{$state}}</strong></p>
 											<p>{{$forecast}}</p>
 										</td>
 									</tr>

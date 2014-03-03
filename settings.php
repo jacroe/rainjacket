@@ -15,10 +15,13 @@ if ($_POST)
 		$data["errors"][] = array("title"=>"Zipcode invalid", "body"=>"Please enter a valid US zipcode.");
 	if (!$_POST["emailDaySendTime"] || !$_POST["emailNightSendTime"])
 		$data["errors"][] = array("title"=>"Times can't be empty", "body"=>"Please enter a time for both fields.");
+	if (!validate_phone($_POST["phone"]))
+		$data["errors"][] = array("title"=>"Phone number invalid", "body"=>"Please enter a valid phone number.");
 	if (empty($data["errors"]))
 	{
 		$scalene->database->update("users", array(
 			"email"=>$_POST["email"],
+			"phone"=>$_POST["phone"],
 			"zipcode"=>$_POST["zipcode"],
 			"timezone"=>$_POST["timezone"],
 			"dayTime"=>date_timezoneConvert($_POST["emailDaySendTime"]." ".$_POST["timezone"]),
