@@ -1,19 +1,18 @@
 <?php
 
-class Email
+class Email extends Library
 {
-	private $scalene;
-
 	private $smtpServer;
 	private $smtpPort;
 	private $smtpUser;
 	private $smtpPass;
 	private $smtpFrom;
 
-	public function __construct($scalene)
+	public function __construct($s)
 	{
-		$this->scalene = $scalene;
-		foreach ($this->scalene->config["email"] as $var => $value)
+		parent::__construct($s);
+
+		foreach ($this->config["email"] as $var => $value)
 			$this->{"smtp".ucfirst($var)} = $value;
 	}
 

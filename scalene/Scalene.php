@@ -18,6 +18,7 @@ class Scalene
 	{
 		require SCALENE_PATH."Load.php";
 		require SCALENE_PATH."View.php";
+		require SCALENE_PATH."Base.php";
 
 		$this->config = $config;
 		$this->timestart = microtime(true);

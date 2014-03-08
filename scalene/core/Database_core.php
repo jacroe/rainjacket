@@ -1,15 +1,14 @@
 <?php
 
-class Database
+class Database extends Core
 {
 	private $con;
-	private $scalene;
 
-	public function __construct($scalene)
+	public function __construct($s)
 	{
-		$this->scalene = $scalene;
+		parent::__construct($s);
 
-		foreach ($this->scalene->config["database"] as $var => $value)
+		foreach ($this->config["database"] as $var => $value)
 			${$var} = $value;
 
 		try

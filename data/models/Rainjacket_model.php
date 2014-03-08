@@ -7,37 +7,20 @@
  * @author  Jacob Roeland
  */
 
-class Rainjacket
+class Rainjacket extends Model
 {
-	/**
-	 * Stored instance of the Scalene class
-	 * @var Scalene()
-	 */
-	private $_scalene;
-
-	/**
-	 * Class constructor
-	 * @param Scalene() $scalene Reference to scalene class
-	 */
-	public function __construct($scalene)
-	{
-		$this->_scalene = $scalene;
-	}
-
 	/**
 	 * Gecodes the customers' zipcodes into useable data. Searches the database for zipcodes that have not been
 	 * geocoded and then does it.
 	 */
 	public function AddZipsToDatabase()
 	{
-		$scalene = $this->_scalene;
-
-		$todoZips = $scalene->database->query("SELECT zipcode FROM `users` WHERE zipcode NOT IN (SELECT zipcode FROM `zipcodes` WHERE 1) GROUP BY zipcode");	// Selects all zips that aren't already in the cache
+		$todoZips = $this->database->query("SELECT zipcode FROM `users` WHERE zipcode NOT IN (SELECT zipcode FROM `zipcodes` WHERE 1) GROUP BY zipcode");	// Selects all zips that aren't already in the cache
 		foreach ($todoZips as $zip)
 		{
 			$location = $this->_LocationLookup($zip["zipcode"]);
 			$location["timezone"] = $this->_TimezoneLookup($location["lat"], $location["lng"]);
-			$scalene->database->insert("zipcodes", $location);
+			$this->database->insert("zipcodes", $location);
 		}
 	}
 
@@ -76,7 +59,7 @@ class Rainjacket
 		else
 			$template = $this->_GetTemplate($isDay, false, false);
 
-		return $this->_scalene->view->string($template, $replace);
+		return $this->view->string($template, $replace);
 
 	}
 
@@ -127,7 +110,7 @@ class Rainjacket
 	 */
 	private function _GetTemplate($isDay, $isPrecip, $isStopping)
 	{
-		$templates = $this->_scalene->database->get("templates",
+		$templates = $this->database->get("templates",
 			"`isDay` = ".(int)$isDay." and ".
 			"`isPrecip` = ".(int)$isPrecip." and ".
 			"`isStopping` = ".(int)$isStopping

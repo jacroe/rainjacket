@@ -1,16 +1,16 @@
 <?php
 
-class Twitter
+class Twitter extends Library
 {
 	private $scalene;
 	private $tw;
 
-	public function __construct($scalene)
+	public function __construct($s)
 	{
-		$this->scalene = $scalene;
+		parent::__construct($s);
 
 		require_once SCALENE_PATH."extlib/TwitterAPIExchange.php";
-		$this->tw = new TwitterAPIExchange($scalene->config["twitter"]);
+		$this->tw = new TwitterAPIExchange($this->config["twitter"]);
 	}
 
 	public function tweet($tweet)

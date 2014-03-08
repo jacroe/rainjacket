@@ -8,14 +8,8 @@
  * @author Jacob Roeland
  */
 
-class Twilio
+class Twilio extends Model
 {
-	/**
-	 * Stored instance of the Scalene class
-	 * @var Scalene()
-	 */
-	private $_scalene;
-
 	/**
 	 * Instance of the Twilio class
 	 * @var Twilio()
@@ -28,11 +22,10 @@ class Twilio
 	 */
 	public function __construct($scalene)
 	{
+		parent::__construct($scalene);
+
 		require_once SCALENE_PATH."extlib/Twilio/Twilio.php";
-
-		$this->_scalene = $scalene;
-
-		$this->_twilio = new Services_Twilio($scalene->config["twilio"]["account_sid"], $scalene->config["twilio"]["auth_token"]);
+		$this->_twilio = new Services_Twilio($this->config["twilio"]["account_sid"], $this->config["twilio"]["auth_token"]);
 	}
 
 	/**
@@ -44,7 +37,7 @@ class Twilio
 	{
 		$this->_twilio->account->messages->create(array(
 			"To" => $num,
-			"From" => $this->_scalene->config["twilio"]["number"],
+			"From" => $this->config["twilio"]["number"],
 			"Body" => $msg,
 		));
 	}

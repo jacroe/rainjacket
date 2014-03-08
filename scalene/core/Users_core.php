@@ -2,18 +2,18 @@
 session_start();
 session_regenerate_id(true);
 
-class Users
+class Users extends Core
 {
 	private $scalene;
 	private $phpass;
 	private $dbtable;
 	public $errors;
 
-	public function __construct($scalene)
+	public function __construct($s)
 	{
-		$this->scalene = $scalene;
-		$this->scalene->load->helper("validator");
-		$this->dbtable = $this->scalene->config["users"]["dbtable"];
+		parent::__construct($s);
+		$this->load->helper("validator");
+		$this->dbtable = $this->config["users"]["dbtable"];
 
 		require_once SCALENE_PATH."extlib/PasswordHash.php";
 
@@ -32,7 +32,7 @@ class Users
 	{
 		if ($this->userLoggedIn())
 		{
-			$user = $this->scalene->database->get("users", "`username` = '{$_SESSION["user"]}'");
+			$user = $this->database->get("users", "`username` = '{$_SESSION["user"]}'");
 			return $user[0];
 		}
 		
@@ -59,7 +59,7 @@ class Users
 				"email"=>$email,
 				"password"=>$this->phpass->HashPassword($password)
 			);
-			$this->scalene->database->insert($this->dbtable, array_merge($main, $other));
+			$this->database->insert($this->dbtable, array_merge($main, $other));
 			$this->login($username, $password);
 			return true;
 		}
@@ -73,7 +73,7 @@ class Users
 
 	public function login($username, $password)
 	{
-		$userRows = $this->scalene->database->get($this->dbtable, "`username` = '$username'");
+		$userRows = $this->database->get($this->dbtable, "`username` = '$username'");
 		$user = $userRows[0];
 		if ($this->phpass->CheckPassword($password, $user["password"]))
 		{
@@ -100,7 +100,7 @@ class Users
 
 	private function isUsernameFree($username)
 	{
-		$rows = $this->scalene->database->get($this->dbtable, "`username` = '$username'");
+		$rows = $this->database->get($this->dbtable, "`username` = '$username'");
 		if (empty($rows))
 			return true;
 		else
@@ -109,7 +109,7 @@ class Users
 
 	private function isEmailFree($email)
 	{
-		$rows = $this->scalene->database->get($this->dbtable, "`email` = '$email'");
+		$rows = $this->database->get($this->dbtable, "`email` = '$email'");
 		if (empty($rows))
 			return true;
 		else

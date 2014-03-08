@@ -1,15 +1,16 @@
 <?php
 
-class Pushover
+class Pushover extends Library
 {
 	private $scalene;
 	private $appID;
 	private $userID;
 
-	public function __construct($scalene)
+	public function __construct($s)
 	{
-		$this->scalene = $scalene;
-		foreach ($this->scalene->config["pushover"] as $var => $value)
+		parent::__construct($s);
+
+		foreach ($this->config["pushover"] as $var => $value)
 			$this->{$var} = $value;
 	}
 
