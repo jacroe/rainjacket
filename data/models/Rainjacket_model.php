@@ -13,13 +13,13 @@ class Rainjacket extends Model
 	 * Gecodes the customers' zipcodes into useable data. Searches the database for zipcodes that have not been
 	 * geocoded and then does it.
 	 */
-	public function AddZipsToDatabase()
+	public function addZipsToDatabase()
 	{
 		$todoZips = $this->database->query("SELECT zipcode FROM `users` WHERE zipcode NOT IN (SELECT zipcode FROM `zipcodes` WHERE 1) GROUP BY zipcode");	// Selects all zips that aren't already in the cache
 		foreach ($todoZips as $zip)
 		{
-			$location = $this->_LocationLookup($zip["zipcode"]);
-			$location["timezone"] = $this->_TimezoneLookup($location["lat"], $location["lng"]);
+			$location = $this->_locationLookup($zip["zipcode"]);
+			$location["timezone"] = $this->_timezoneLookup($location["lat"], $location["lng"]);
 			$this->database->insert("zipcodes", $location);
 		}
 	}
@@ -31,7 +31,7 @@ class Rainjacket extends Model
 	 * @param  boolean $isDay Whether or not it's currently "daytime" for the customer
 	 * @return string         The forecast
 	 */
-	public function GetForecast($lat, $long, $isDay = true)
+	public function getForecast($lat, $long, $isDay = true)
 	{
 		$dataJson = json_decode(exec("python ".BASE_PATH."/rainjacket/rainjacket.py $lat $long"));
 
@@ -40,24 +40,24 @@ class Rainjacket extends Model
 		else
 			$temp = $dataJson->temp->lo->temp;
 
-		$replace = array("tempAdj"=>$this->_PrettyTempAdj($temp), "temp"=>$this->_PrettyTemp($temp));
+		$replace = array("tempAdj"=>$this->_prettyTempAdj($temp), "temp"=>$this->_prettyTemp($temp));
 
 		if ($dataJson->precipitation)
 		{
-			$replace["topPrecipType"] = $this->_PrettyPrecipType($dataJson->precipitation->top->type, $dataJson->precipitation->top->intensity);
-			$replace["topPrecipTime"] = $this->_PrettyTime($dataJson->precipitation->top->time);
-			$replace["topPrecipChance"] = $this->_PrettyPrecipChance($dataJson->precipitation->top->chance);
+			$replace["topPrecipType"] = $this->_prettyPrecipType($dataJson->precipitation->top->type, $dataJson->precipitation->top->intensity);
+			$replace["topPrecipTime"] = $this->_prettyTime($dataJson->precipitation->top->time);
+			$replace["topPrecipChance"] = $this->_prettyPrecipChance($dataJson->precipitation->top->chance);
 
-			$replace["startPrecipType"] = $this->_PrettyPrecipType($dataJson->precipitation->start->type, $dataJson->precipitation->start->intensity);
-			$replace["startPrecipTime"] = $this->_PrettyTime($dataJson->precipitation->start->time);
-			$replace["startPrecipChance"] = $this->_PrettyPrecipChance($dataJson->precipitation->start->chance);
+			$replace["startPrecipType"] = $this->_prettyPrecipType($dataJson->precipitation->start->type, $dataJson->precipitation->start->intensity);
+			$replace["startPrecipTime"] = $this->_prettyTime($dataJson->precipitation->start->time);
+			$replace["startPrecipChance"] = $this->_prettyPrecipChance($dataJson->precipitation->start->chance);
 
-			$replace["endPrecipTime"] = $this->_PrettyTime($dataJson->precipitation->endTime);
+			$replace["endPrecipTime"] = $this->_prettyTime($dataJson->precipitation->endTime);
 
-			$template = $this->_GetTemplate($isDay, (boolean)$dataJson->precipitation->start->chance, (boolean)$dataJson->precipitation->endTime);
+			$template = $this->_getTemplate($isDay, (boolean)$dataJson->precipitation->start->chance, (boolean)$dataJson->precipitation->endTime);
 		}
 		else
-			$template = $this->_GetTemplate($isDay, false, false);
+			$template = $this->_getTemplate($isDay, false, false);
 
 		return $this->view->string($template, $replace);
 
@@ -69,7 +69,7 @@ class Rainjacket extends Model
 	 * @return array    An array of the response featuring city (city), state (state), latitude (lat)
 	 *                  longitude (ng), and zipcode (zipcode)
 	 */
-	private function _LocationLookup($zip)
+	private function _locationLookup($zip)
 	{
 		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=$zip&sensor=false"));
 
@@ -93,7 +93,7 @@ class Rainjacket extends Model
 	 * @param  float  $lng Longitude
 	 * @return string      The timezone ID, e.g. "America/Chicago"
 	 */
-	private function _TimezoneLookup($lat, $lng)
+	private function _timezoneLookup($lat, $lng)
 	{
 		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/timezone/json?location=$lat,$lng&sensor=false&timestamp=".time()));
 
@@ -108,7 +108,7 @@ class Rainjacket extends Model
 	 * @param  boolean $isStopping Is it going to stop before the day ends
 	 * @return string              The template from the
 	 */
-	private function _GetTemplate($isDay, $isPrecip, $isStopping)
+	private function _getTemplate($isDay, $isPrecip, $isStopping)
 	{
 		$templates = $this->database->get("templates",
 			"`isDay` = ".(int)$isDay." and ".
@@ -123,7 +123,7 @@ class Rainjacket extends Model
 	 * @param  int $temp    The temperature
 	 * @return string       The English'd temperature
 	 */
-	private function _PrettyTemp($temp)
+	private function _prettyTemp($temp)
 	{
 		if ((int)substr($temp, -1) < 4)
 			$loMidHi = "low ";
@@ -139,7 +139,7 @@ class Rainjacket extends Model
 	 * @param  int $time    The unix epoch to format
 	 * @return string       The formatted time
 	 */
-	private function _PrettyTime($time)
+	private function _prettyTime($time)
 	{
 		$hour = date("g", $time);
 		$minute = date("i", $time);
@@ -163,7 +163,7 @@ class Rainjacket extends Model
 	 * @param  int $temp    The temperature
 	 * @return string       The adjective describing the temperature.
 	 */
-	private function _PrettyTempAdj($temp)
+	private function _prettyTempAdj($temp)
 	{
 		# Just like we do with the templates, we'll probabily have a dictionary of terms available for each range
 
@@ -192,7 +192,7 @@ class Rainjacket extends Model
 	 * @param  float $intensity  Precipitation intensity
 	 * @return string            The corresponding word or phrase
 	 */
-	private function _PrettyPrecipType($type, $intensity)
+	private function _prettyPrecipType($type, $intensity)
 	{
 		$types = array(
 			"rain"=>array("drizzle", "light rain", "rain", "heavy rain"),
@@ -218,7 +218,7 @@ class Rainjacket extends Model
 	 * @param  float $chance  The chance precipitation might occur (between 0 and 1)
 	 * @return string         An English'd chance based on the Wikipedia article below
 	 */
-	private function _PrettyPrecipChance($chance)
+	private function _prettyPrecipChance($chance)
 	{
 		// https://en.wikipedia.org/wiki/Probability_of_precipitation
 

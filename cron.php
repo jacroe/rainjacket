@@ -17,7 +17,7 @@ echo "
 ";
 
 echo "Adding zips to database...";
-$scalene->rainjacket->AddZipsToDatabase();
+$scalene->rainjacket->addZipsToDatabase();
 echo "done!\n\n";
 $users = $scalene->database->get("users", "dayTime = '$now' OR nightTime = '$now'");
 if (!empty($users))
@@ -31,12 +31,12 @@ if (!empty($users))
 		echo "\tChecking Forecastio for their forecast...";
 		if ($user["dayTime"] == $now)
 		{
-			$forecast = $scalene->rainjacket->GetForecast($location["lat"], $location["lng"]);
+			$forecast = $scalene->rainjacket->getForecast($location["lat"], $location["lng"]);
 			$data["isDay"] = true;
 		}
 		else
 		{
-			$forecast = $scalene->rainjacket->GetForecast($location["lat"], $location["lng"], false);
+			$forecast = $scalene->rainjacket->getForecast($location["lat"], $location["lng"], false);
 			$data["isDay"] = false;
 		}
 
