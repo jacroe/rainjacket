@@ -8,7 +8,6 @@ class View
 	public function __construct($parent)
 	{
 		$this->parent = $parent;
-		require_once SCALENE_PATH."extlib/smarty/Smarty.class.php";
 
 		$smarty = new Smarty;
 		$smarty->left_delimiter = '{{';

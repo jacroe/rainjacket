@@ -18,7 +18,6 @@ class Email extends Library
 
 	public function Send($toName, $toEmail, $subject, $body, $attachment = null)
 	{
-		require_once SCALENE_PATH."extlib/swift/swift_required.php";
 		$transport = Swift_SmtpTransport::newInstance($this->smtpServer, $this->smtpPort, 'ssl')
 		  ->setUsername($this->smtpUser)
 		  ->setPassword($this->smtpPass);

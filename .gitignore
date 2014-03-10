@@ -1,6 +1,7 @@
-scalene/config.php
-data/views_c/
 *.pyc
+data/views_c/
+scalene/config.php
+scalene/extlib/composer/
 rainjacket/apikey
 
 *.sublime*

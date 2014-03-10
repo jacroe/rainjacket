@@ -5,6 +5,10 @@ define("SCALENE_PATH", BASE_PATH."scalene/");
 define("DATA_PATH", BASE_PATH."data/");
 
 require SCALENE_PATH."config.php";
+if (!file_exists(SCALENE_PATH."extlib/composer/autoload.php"))
+	die("Don't forget to install the composer packages.");
+else
+	require SCALENE_PATH."extlib/composer/autoload.php";
 
 error_reporting(E_ALL ^ E_NOTICE);
 
