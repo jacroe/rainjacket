@@ -38,7 +38,7 @@ class Scalene
 				$this->load->core($core);
 	}
 
-	public function TimeSinceStart()
+	public function timeSinceStart()
 	{
 		return microtime(true)-$this->timestart;
 	}

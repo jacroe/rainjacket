@@ -33,7 +33,7 @@ class Twilio extends Model
 	 * @param int    $num The phone number to text
 	 * @param string $msg The message to send
 	 */
-	public function SendText($num, $msg)
+	public function sendText($num, $msg)
 	{
 		$this->_twilio->account->messages->create(array(
 			"To" => $num,

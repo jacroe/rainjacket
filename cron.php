@@ -51,7 +51,7 @@ if (!empty($users))
 		echo "done!\n";
 
 		echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
-		$scalene->twilio->SendText($user["phone"], $forecast);
+		$scalene->twilio->sendText($user["phone"], $forecast);
 		echo "done!\n";
 	}
 }

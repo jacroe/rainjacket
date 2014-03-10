@@ -16,7 +16,7 @@ class Email extends Library
 			$this->{"smtp".ucfirst($var)} = $value;
 	}
 
-	public function Send($toName, $toEmail, $subject, $body, $attachment = null)
+	public function send($toName, $toEmail, $subject, $body, $attachment = null)
 	{
 		$transport = Swift_SmtpTransport::newInstance($this->smtpServer, $this->smtpPort, 'ssl')
 		  ->setUsername($this->smtpUser)
