@@ -28,6 +28,7 @@ if (!empty($users))
 		date_default_timezone_set($user["timezone"]);
 		$location = $scalene->database->get("zipcodes", "zipcode = '{$user["zipcode"]}'");
 		$location = $location[0];
+		echo "\tChecking Forecastio for their forecast...";
 		if ($user["dayTime"] == $now)
 		{
 			$forecast = $scalene->rainjacket->GetForecast($location["lat"], $location["lng"]);
@@ -39,6 +40,7 @@ if (!empty($users))
 			$data["isDay"] = false;
 		}
 
+		echo "done!\n";
 		$data["forecast"] = $forecast;
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
