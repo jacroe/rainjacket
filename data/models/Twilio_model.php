@@ -24,7 +24,6 @@ class Twilio extends Model
 	{
 		parent::__construct($scalene);
 
-		require_once SCALENE_PATH."extlib/Twilio/Twilio.php";
 		$this->_twilio = new Services_Twilio($this->config["twilio"]["account_sid"], $this->config["twilio"]["auth_token"]);
 	}
 

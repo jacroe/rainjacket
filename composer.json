@@ -2,7 +2,8 @@
 	"require": {
 		"erusev/parsedown": "0.9.*",
 		"smarty/smarty": "3.1.16",
-		"swiftmailer/swiftmailer": "~5"
+		"swiftmailer/swiftmailer": "~5",
+		"twilio/sdk": "3.12.*"
 	},
 	"config": {
 		"vendor-dir": "scalene/extlib/composer"
