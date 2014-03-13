@@ -2,30 +2,28 @@
 
 abstract class Core
 {
-	public function __construct(&$scalene)
+	public function __get($key)
 	{
-		foreach ($scalene as $k => $v)
-			$this->$k = $v;
+		return get_scalene()->$key;
 	}
 
 }
 
 abstract class Library
 {
-	public function __construct(&$scalene)
+
+	public function __get($key)
 	{
-		foreach ($scalene as $k => $v)
-			$this->$k = $v;
+		return get_scalene()->$key;
 	}
 
 }
 
 abstract class Model
 {
-	public function __construct(&$scalene)
+	public function __get($key)
 	{
-		foreach ($scalene as $k => $v)
-			$this->$k = $v;
+		return get_scalene()->$key;
 	}
 
 }

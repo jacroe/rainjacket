@@ -4,10 +4,8 @@ class Database extends Core
 {
 	private $con;
 
-	public function __construct($s)
+	public function __construct()
 	{
-		parent::__construct($s);
-
 		foreach ($this->config["database"] as $var => $value)
 			${$var} = $value;
 

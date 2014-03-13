@@ -14,7 +14,7 @@ class Load
 		$coreU = ucfirst($core);
 		require_once SCALENE_PATH."core/{$coreU}_core.php";
 
-		$this->parent->$core = new $coreU($this->parent);
+		$this->parent->$core = new $coreU();
 	}
 
 	public function library($lib)
@@ -22,7 +22,7 @@ class Load
 		$libU = ucfirst($lib);
 		require_once SCALENE_PATH."lib/{$libU}_lib.php";
 
-		$this->parent->$lib = new $libU($this->parent);
+		$this->parent->$lib = new $libU();
 	}
 
 	public function model($model)
@@ -30,7 +30,7 @@ class Load
 		$modelU = ucfirst($model);
 		require_once DATA_PATH."models/{$modelU}_model.php";
 
-		$this->parent->$model = new $modelU($this->parent);
+		$this->parent->$model = new $modelU();
 	}
 
 	public function helper($helper)

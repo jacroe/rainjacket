@@ -1,8 +1,8 @@
 <?php
 require "scalene/Scalene.php";
 
-$scalene->load->core("users");
-if ($user = $scalene->users->userLoggedIn())
-	$data["user"] = $scalene->users->getUser();
+$_->load->core("users");
+if ($user = $_->users->userLoggedIn())
+	$data["user"] = $_->users->getUser();
 
-$scalene->view->display("index", $data);
+$_->view->display("index", $data);

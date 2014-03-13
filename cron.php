@@ -1,8 +1,8 @@
 <?php
 require "scalene/Scalene.php";
-$scalene->load->model("rainjacket");
-$scalene->load->model("twilio");
-$scalene->load->helper("strings");
+$_->load->model("rainjacket");
+$_->load->model("twilio");
+$_->load->helper("strings");
 
 date_default_timezone_set("UTC");
 $now = date('Hi');
@@ -17,26 +17,26 @@ echo "
 ";
 
 echo "Adding zips to database...";
-$scalene->rainjacket->addZipsToDatabase();
+$_->rainjacket->addZipsToDatabase();
 echo "done!\n\n";
-$users = $scalene->database->get("users", "dayTime = '$now' OR nightTime = '$now'");
+$users = $_->database->get("users", "dayTime = '$now' OR nightTime = '$now'");
 if (!empty($users))
 {
 	echo "Starting to email ".count($users)." ".pluralize(count($users), "customer", "customers")."...\n";
 	foreach ($users as $user)
 	{
 		date_default_timezone_set($user["timezone"]);
-		$location = $scalene->database->get("zipcodes", "zipcode = '{$user["zipcode"]}'");
+		$location = $_->database->get("zipcodes", "zipcode = '{$user["zipcode"]}'");
 		$location = $location[0];
 		echo "\tChecking Forecastio for their forecast...";
 		if ($user["dayTime"] == $now)
 		{
-			$forecast = $scalene->rainjacket->getForecast($location["lat"], $location["lng"]);
+			$forecast = $_->rainjacket->getForecast($location["lat"], $location["lng"]);
 			$data["isDay"] = true;
 		}
 		else
 		{
-			$forecast = $scalene->rainjacket->getForecast($location["lat"], $location["lng"], false);
+			$forecast = $_->rainjacket->getForecast($location["lat"], $location["lng"], false);
 			$data["isDay"] = false;
 		}
 
@@ -45,16 +45,16 @@ if (!empty($users))
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
 		
-		$body = $scalene->view->fetch("email", $data);
+		$body = $_->view->fetch("email", $data);
 		echo "\tEmailing {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
-		$scalene->email->send($user["username"], $user["email"], "Forecast for Today", $body);
+		$_->email->send($user["username"], $user["email"], "Forecast for Today", $body);
 		echo "done!\n";
 
 		echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
-		$scalene->twilio->sendText($user["phone"], $forecast);
+		$_->twilio->sendText($user["phone"], $forecast);
 		echo "done!\n";
 	}
 }
 
 echo "\n";
-echo "Done! The whole shebang took ".round($scalene->TimeSinceStart(), 2)."s\n";
+echo "Done! The whole shebang took ".round($_->TimeSinceStart(), 2)."s\n";

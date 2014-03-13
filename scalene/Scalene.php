@@ -32,7 +32,10 @@ class Scalene
 		$this->load = new Load($this);
 		$this->view = new View($this);
 		$this->model = new StdClass;
+	}
 
+	public function loadFromConfig()
+	{
 		if (array_key_exists("load", $this->config))
 			foreach($this->config["load"]["core"] as $core)
 				$this->load->core($core);
@@ -45,4 +48,11 @@ class Scalene
 
 }
 
-$scalene = new Scalene($config);
+$_ = new Scalene($config);
+$_->loadFromConfig();
+
+function get_scalene()
+{
+	global $_;
+	return $_;
+}

@@ -20,10 +20,8 @@ class Twilio extends Model
 	 * Class constructor
 	 * @param Scalene() $scalene Reference to scalene class
 	 */
-	public function __construct($scalene)
+	public function __construct()
 	{
-		parent::__construct($scalene);
-
 		$this->_twilio = new Services_Twilio($this->config["twilio"]["account_sid"], $this->config["twilio"]["auth_token"]);
 	}
 

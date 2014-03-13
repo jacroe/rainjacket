@@ -6,10 +6,8 @@ class Pushover extends Library
 	private $appID;
 	private $userID;
 
-	public function __construct($s)
+	public function __construct()
 	{
-		parent::__construct($s);
-
 		foreach ($this->config["pushover"] as $var => $value)
 			$this->{$var} = $value;
 	}

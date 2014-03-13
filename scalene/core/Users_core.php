@@ -9,9 +9,8 @@ class Users extends Core
 	private $dbtable;
 	public $errors;
 
-	public function __construct($s)
+	public function __construct()
 	{
-		parent::__construct($s);
 		$this->load->helper("validator");
 		$this->dbtable = $this->config["users"]["dbtable"];
 

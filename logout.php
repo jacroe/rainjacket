@@ -1,7 +1,7 @@
 <?php
 require "scalene/Scalene.php";
 
-$scalene->load->core("users");
+$_->load->core("users");
 
-$scalene->users->logout();
+$_->users->logout();
 header("Location: index.php");

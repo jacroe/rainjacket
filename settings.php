@@ -1,10 +1,10 @@
 <?php
 require "scalene/Scalene.php";
-$scalene->load->core("users");
-$scalene->load->helper("validator");
-$scalene->load->helper("date");
+$_->load->core("users");
+$_->load->helper("validator");
+$_->load->helper("date");
 
-if (!$user = $scalene->users->userLoggedIn())
+if (!$user = $_->users->userLoggedIn())
 	header("Location: login.php");
 
 if ($_POST)
@@ -19,7 +19,7 @@ if ($_POST)
 		$data["errors"][] = array("title"=>"Phone number invalid", "body"=>"Please enter a valid phone number.");
 	if (empty($data["errors"]))
 	{
-		$scalene->database->update("users", array(
+		$_->database->update("users", array(
 			"email"=>$_POST["email"],
 			"phone"=>$_POST["phone"],
 			"zipcode"=>$_POST["zipcode"],
@@ -31,7 +31,7 @@ if ($_POST)
 	}
 }
 
-$data["user"] = $scalene->users->getUser();
+$data["user"] = $_->users->getUser();
 $data["user"]["dayTime"] = date_timezoneConvert($data["user"]["dayTime"]." UTC", $data["user"]["timezone"], "g:iA");
 $data["user"]["nightTime"] = date_timezoneConvert($data["user"]["nightTime"]." UTC", $data["user"]["timezone"], "g:iA");
-$scalene->view->display("settings", $data);
+$_->view->display("settings", $data);
