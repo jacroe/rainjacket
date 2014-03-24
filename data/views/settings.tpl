@@ -36,8 +36,8 @@
 							<option value="America/Denver"{{if $user.timezone == "America/Denver"}} selected{{/if}}>Mountain</option>
 							<option value="America/Phoenix"{{if $user.timezone == "America/Phoenix"}} selected{{/if}}>Mountain (no DST)</option>
 							<option value="America/Los_Angeles"{{if $user.timezone == "America/Los_Angeles"}} selected{{/if}}>Pacific</option>
-							<option value="America/Anchorage"{{if $user.timezone == "America/Anchorage"}} selected{{/if}}>Alaska</option>
-							<option value="America/Adak"{{if $user.timezone == "America/Adak"}} selected{{/if}}>Hawaii</option>
+							<option value="America/Anchorage"{{if $user.timezone == "America/Anchorage"}} selected{{/if}}>Alaska (Anchorage)</option>
+							<option value="America/Adak"{{if $user.timezone == "America/Adak"}} selected{{/if}}>Alaska (Adak)</option>
 							<option value="Pacific/Honolulu"{{if $user.timezone == "Pacific/Honolulu"}} selected{{/if}}>Hawaii (no DST)</option>
 						</select>
 					</div>
