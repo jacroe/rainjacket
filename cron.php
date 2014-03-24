@@ -19,7 +19,7 @@ echo "
 echo "Adding zips to database...";
 $_->rainjacket->addZipsToDatabase();
 echo "done!\n\n";
-$users = $_->database->get("users", "dayTime = '$now' OR nightTime = '$now'");
+$users = $_->database->get("users", "(`dayTime` = '$now' OR `nightTime` = '$now') AND `sendBy` != 0");
 if (!empty($users))
 {
 	echo "Starting to email ".count($users)." ".pluralize(count($users), "customer", "customers")."...\n";
@@ -45,14 +45,20 @@ if (!empty($users))
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
 		
-		$body = $_->view->fetch("email", $data);
-		echo "\tEmailing {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
-		$_->email->send($user["username"], $user["email"], "Forecast for Today", $body);
-		echo "done!\n";
+		if ($user["sendBy"] == 1 or $user["sendBy"] == 3)
+		{
+			$body = $_->view->fetch("email", $data);
+			echo "\tEmailing {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
+			$_->email->send($user["username"], $user["email"], "Forecast for Today", $body);
+			echo "done!\n";
+		}
 
-		echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
-		$_->twilio->sendText($user["phone"], $forecast);
-		echo "done!\n";
+		if ($user["sendBy"] == 2 or $user["sendBy"] == 3)
+		{
+			echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
+			$_->twilio->sendText($user["phone"], $forecast);
+			echo "done!\n";
+		}
 	}
 }
 

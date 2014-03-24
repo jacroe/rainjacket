@@ -43,15 +43,26 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="emailDaySendTime" class="col-sm-4 control-label">You wakeup around </label>
+					<label for="sendTimeDay" class="col-sm-4 control-label">You wakeup around </label>
 					<div class="col-sm-8">
-						<input type="text" name="emailDaySendTime" class="form-control" id="emailDaySendTime" placeholder="8:00AM" value="{{$user.dayTime}}" />
+						<input type="text" name="sendTimeDay" class="form-control" id="sendTimeDay" placeholder="8:00AM" value="{{$user.dayTime}}" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="emailNightSendTime" class="col-sm-4 control-label">You leave work around </label>
+					<label for="sendTimeNight" class="col-sm-4 control-label">You leave work around </label>
 					<div class="col-sm-8">
-						<input type="text" name="emailNightSendTime" class="form-control" id="emailNightSendTime" placeholder="8:00AM" value="{{$user.nightTime}}" />
+						<input type="text" name="sendTimeNight" class="form-control" id="sendTimeNight" placeholder="8:00AM" value="{{$user.nightTime}}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="sendBy" class="col-sm-4 control-label">Send your forecast by </label>
+					<div class="col-sm-8">
+						<select class="form-control" name="sendBy" id="sendBy">
+							<option value="0"{{if $user.sendBy == 0}} selected{{/if}}>Don't send it</option>
+							<option value="1"{{if $user.sendBy == 1}} selected{{/if}}>Email</option>
+							<option value="2"{{if $user.sendBy == 2}} selected{{/if}}>SMS</option>
+							<option value="3"{{if $user.sendBy == 3}} selected{{/if}}>Email and SMS</option>
+						</select>
 					</div>
 				</div>
 				<div class="form-group">

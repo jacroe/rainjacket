@@ -13,7 +13,7 @@ if ($_POST)
 		$data["errors"][] = array("title"=>"Email invalid", "body"=>"Please enter a valid email.");
 	if (!validate_zipcode($_POST["zipcode"]))
 		$data["errors"][] = array("title"=>"Zipcode invalid", "body"=>"Please enter a valid US zipcode.");
-	if (!$_POST["emailDaySendTime"] || !$_POST["emailNightSendTime"])
+	if (!$_POST["sendTimeDay"] || !$_POST["sendTimeNight"])
 		$data["errors"][] = array("title"=>"Times can't be empty", "body"=>"Please enter a time for both fields.");
 	if (!validate_phone($_POST["phone"]))
 		$data["errors"][] = array("title"=>"Phone number invalid", "body"=>"Please enter a valid phone number.");
@@ -24,8 +24,9 @@ if ($_POST)
 			"phone"=>$_POST["phone"],
 			"zipcode"=>$_POST["zipcode"],
 			"timezone"=>$_POST["timezone"],
-			"dayTime"=>date_timezoneConvert($_POST["emailDaySendTime"]." ".$_POST["timezone"]),
-			"nightTime"=>date_timezoneConvert($_POST["emailNightSendTime"]." ".$_POST["timezone"])
+			"dayTime"=>date_timezoneConvert($_POST["sendTimeDay"]." ".$_POST["timezone"]),
+			"nightTime"=>date_timezoneConvert($_POST["sendTimeNight"]." ".$_POST["timezone"]),
+			"sendBy"=>$_POST["sendBy"]
 		), "username = '$user'");
 		$data["errors"][] = array("title"=>"Done!", "body"=>"Those settings were updated like a boss.", "type"=>"success");
 	}
