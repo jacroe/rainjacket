@@ -31,7 +31,7 @@ if (!empty($users))
 		echo "\tChecking Forecastio for their forecast...";
 		if ($user["dayTime"] == $now)
 		{
-			$forecast = $_->rainjacket->getForecast($location["lat"], $location["lng"]);
+			$forecast = $_->rainjacket->getForecast($location["latitude"], $location["longitude"]);
 			$data["isDay"] = true;
 		}
 		else

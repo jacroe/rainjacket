@@ -15,11 +15,11 @@ class Rainjacket extends Model
 	 */
 	public function addZipsToDatabase()
 	{
+		$this->load->library("googlelocation");
 		$todoZips = $this->database->query("SELECT zipcode FROM `users` WHERE zipcode NOT IN (SELECT zipcode FROM `zipcodes` WHERE 1) GROUP BY zipcode");	// Selects all zips that aren't already in the cache
 		foreach ($todoZips as $zip)
 		{
-			$location = $this->_locationLookup($zip["zipcode"]);
-			$location["timezone"] = $this->_timezoneLookup($location["lat"], $location["lng"]);
+			$location = $this->googlelocation->getByZip($zip["zipcode"]);
 			$this->database->insert("zipcodes", $location);
 		}
 	}
@@ -61,43 +61,6 @@ class Rainjacket extends Model
 
 		return $this->view->string($template, $replace);
 
-	}
-
-	/**
-	 * Returns address information of a requested zipcode by using the Google Maps Geocoding API
-	 * @param  int $zip Zipcode to lookup
-	 * @return array    An array of the response featuring city (city), state (state), latitude (lat)
-	 *                  longitude (ng), and zipcode (zipcode)
-	 */
-	private function _locationLookup($zip)
-	{
-		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/geocode/json?address=$zip&sensor=false"));
-
-		foreach ($json->results[0]->address_components as $comp)
-		{
-			if (in_array("locality", $comp->types))
-				$loc["city"] = $comp->long_name;
-			if (in_array("administrative_area_level_1", $comp->types))
-				$loc["state"] = $comp->short_name;
-		}
-
-		$loc["lat"] = $json->results[0]->geometry->location->lat;
-		$loc["lng"] = $json->results[0]->geometry->location->lng;
-		$loc["zipcode"] = $zip;
-		return $loc;
-	}
-
-	/**
-	 * Returns the timezone of a latitude and longitude position
-	 * @param  float  $lat Latitude
-	 * @param  float  $lng Longitude
-	 * @return string      The timezone ID, e.g. "America/Chicago"
-	 */
-	private function _timezoneLookup($lat, $lng)
-	{
-		$json = json_decode(file_get_contents("https://maps.googleapis.com/maps/api/timezone/json?location=$lat,$lng&sensor=false&timestamp=".time()));
-
-		return $json->timeZoneId;
 	}
 
 	/**

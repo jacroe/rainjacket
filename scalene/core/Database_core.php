@@ -27,6 +27,11 @@ class Database extends Core
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public function numRows($table, $where = 1)
+	{
+		return count($this->get($table, $where));
+	}
+
 	public function insert($table, $array)
 	{
 		$plainKeys = array_keys($array);
