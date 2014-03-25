@@ -32,7 +32,7 @@
 				<tbody>
 					<tr>
 {{for $i=0 to ($data.lookingAhead|@count - 1)}}
-						<td><img src="{{$ROOT_PATH}}inc/images/weather/{{$data.lookingAhead[$i].image}}.png" alt="{{$data.lookingAhead[$i].condition}}" title="{{$data.lookingAhead[$i].condition}}" /></td>
+						<td><img src="{{$ROOT_PATH}}inc/images/weather/{{$data.lookingAhead[$i].image}}.png" class="img-responsive" alt="{{$data.lookingAhead[$i].condition}}" title="{{$data.lookingAhead[$i].condition}}" /></td>
 {{/for}}
 					</tr>
 					<tr class="temps">
