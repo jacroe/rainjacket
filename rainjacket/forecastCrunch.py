@@ -72,3 +72,13 @@ def crunchChanceOfRain(hourlyData):
 			start=dict(chance=startPrecipChance, time=startPrecipTime, type=startPrecipType, intensity=startPrecipIntensity),
 			endTime=endTime
 			)
+
+def crunchLookingAhead(hourlyData):
+	icons = {"clear-day" : "sunny", "clear-night" : "sunny", "rain" : "rain", "snow" : "snow", "sleet" : "sleet", "wind" : "windy", "fog" : "fog", "cloudy" : "cloudy", "partly-cloudy-day" : "mostlysunny", "partly-cloudy-night" : "mostlysunny"}
+
+	data = list()
+	data.append( dict(condition=hourlyData[0]["summary"], image=icons[hourlyData[0]["icon"]], temp=int(round(hourlyData[0]["temperature"])), time=hourlyData[0]["time"]) )
+	data.append( dict(condition=hourlyData[4]["summary"], image=icons[hourlyData[4]["icon"]], temp=int(round(hourlyData[4]["temperature"])), time=hourlyData[4]["time"]) )
+	data.append( dict(condition=hourlyData[8]["summary"], image=icons[hourlyData[8]["icon"]], temp=int(round(hourlyData[8]["temperature"])), time=hourlyData[8]["time"]) )
+
+	return data
