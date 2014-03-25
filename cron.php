@@ -19,10 +19,11 @@ echo "
 echo "Adding zips to database...";
 $_->rainjacket->addZipsToDatabase();
 echo "done!\n\n";
+
 $users = $_->database->get("users", "(`dayTime` = '$now' OR `nightTime` = '$now') AND `sendBy` != 0");
 if (!empty($users))
 {
-	echo "Starting to email ".count($users)." ".pluralize(count($users), "customer", "customers")."...\n";
+	echo "Starting to message ".count($users)." ".pluralize(count($users), "customer", "customers")."...\n";
 	foreach ($users as $user)
 	{
 		date_default_timezone_set($user["timezone"]);
@@ -31,20 +32,22 @@ if (!empty($users))
 		echo "\tChecking Forecastio for their forecast...";
 		if ($user["dayTime"] == $now)
 		{
-			$forecast = $_->rainjacket->getForecast($location["latitude"], $location["longitude"]);
+			$forecastData = $_->rainjacket->getForecast($location["latitude"], $location["longitude"]);
 			$data["isDay"] = true;
 		}
 		else
 		{
-			$forecast = $_->rainjacket->getForecast($location["latitude"], $location["longitude"], false);
+			$forecastData = $_->rainjacket->getForecast($location["latitude"], $location["longitude"], false);
 			$data["isDay"] = false;
 		}
-
 		echo "done!\n";
-		$data["forecast"] = $forecast;
+
+		$forecastData = json_decode($forecastData);
+
+		$data["forecast"] = $forecastData->processed->forecast;
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
-		
+
 		if ($user["sendBy"] == 1 or $user["sendBy"] == 3)
 		{
 			$body = $_->view->fetch("email", $data);
@@ -56,9 +59,17 @@ if (!empty($users))
 		if ($user["sendBy"] == 2 or $user["sendBy"] == 3)
 		{
 			echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
-			$_->twilio->sendText($user["phone"], $forecast);
+			$_->twilio->sendText($user["phone"], $forecastData->processed->forecast);
 			echo "done!\n";
 		}
+
+		echo "\tStoring the data in the database...";
+		$_->database->put("forecasts", array(
+			"user"=>$user["username"],
+			"raw"=>$forecastData->raw,
+			"processed"=>json_encode($forecastData->processed)
+		));
+		echo "done!\n";
 	}
 }
 

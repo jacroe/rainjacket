@@ -35,6 +35,9 @@ class Rainjacket extends Model
 	{
 		$dataJson = json_decode(exec("python ".BASE_PATH."/rainjacket/rainjacket.py $lat $long"));
 
+		$returnData["processed"]["lookingAhead"] = $dataJson->lookingAhead;
+		$returnData["raw"] = json_encode($dataJson);
+
 		if ($isDay)
 			$temp = $dataJson->temp->hi->temp;
 		else
@@ -45,22 +48,48 @@ class Rainjacket extends Model
 		if ($dataJson->precipitation)
 		{
 			$replace["topPrecipType"] = $this->_prettyPrecipType($dataJson->precipitation->top->type, $dataJson->precipitation->top->intensity);
-			$replace["topPrecipTime"] = $this->_prettyTime($dataJson->precipitation->top->time);
+			$replace["topPrecipTime"] = $this->prettyTime($dataJson->precipitation->top->time);
 			$replace["topPrecipChance"] = $this->_prettyPrecipChance($dataJson->precipitation->top->chance);
 
 			$replace["startPrecipType"] = $this->_prettyPrecipType($dataJson->precipitation->start->type, $dataJson->precipitation->start->intensity);
-			$replace["startPrecipTime"] = $this->_prettyTime($dataJson->precipitation->start->time);
+			$replace["startPrecipTime"] = $this->prettyTime($dataJson->precipitation->start->time);
 			$replace["startPrecipChance"] = $this->_prettyPrecipChance($dataJson->precipitation->start->chance);
 
-			$replace["endPrecipTime"] = $this->_prettyTime($dataJson->precipitation->endTime);
+			$replace["endPrecipTime"] = $this->prettyTime($dataJson->precipitation->endTime);
 
 			$template = $this->_getTemplate($isDay, (boolean)$dataJson->precipitation->start->chance, (boolean)$dataJson->precipitation->endTime);
 		}
 		else
 			$template = $this->_getTemplate($isDay, false, false);
 
-		return $this->view->string($template, $replace);
+		$returnData["processed"]["forecast"] = $this->view->string($template, $replace);
 
+		return json_encode($returnData);
+
+	}
+
+	/**
+	 * Returns a custom time format. For 8am we return "8". For 6:23pm we return "6:23p".
+	 * @param  int $time    The unix epoch to format
+	 * @return string       The formatted time
+	 */
+	public function prettyTime($time)
+	{
+		if (date("Hi", $time) == "0000")
+			return "midnight";
+		if (date("Hi", $time) == "1200")
+			return "noon";
+
+		$hour = date("g", $time);
+		$minute = date("i", $time);
+		$ampm = date("a", $time);
+
+		if ($minute != "00")
+			$minute = ":".$minute;
+		else
+			$minute = "";
+
+		return $hour.$minute.$ampm;
 	}
 
 	/**
@@ -95,30 +124,6 @@ class Rainjacket extends Model
 		else
 			$loMidHi = "high ";
 		return $loMidHi.substr($temp, 0, -1)."0s";
-	}
-
-	/**
-	 * Returns a custom time format. For 8am we return "8". For 6:23pm we return "6:23p".
-	 * @param  int $time    The unix epoch to format
-	 * @return string       The formatted time
-	 */
-	private function _prettyTime($time)
-	{
-		$hour = date("g", $time);
-		$minute = date("i", $time);
-		$ampm = date("A", $time);
-
-		if ($ampm == "AM")
-			$ampm = "";
-		else
-			$ampm = "p";
-
-		if ($minute != "00")
-			$minute = ":".$minute;
-		else
-			$minute = "";
-
-		return $hour.$minute.$ampm;
 	}
 
 	/**
