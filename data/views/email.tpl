@@ -41,7 +41,7 @@
 								<table border="0" cellpadding="20" cellspacing="0" width="100%" id="emailFooter">
 									<tr>
 										<td align="center" valign="top">
-											<a href="http://therainjacket.com/settings.php">Preferences</a> | <a href="http://therainjacket.com/about.php">About</a>
+											<a href="http://therainjacket.com/forecast.php?user={{$user}}">View a prettier version</a> | <a href="http://therainjacket.com/settings.php">Preferences</a> | <a href="http://therainjacket.com/about.php">About</a>
 										</td>
 									</tr>
 								</table>
