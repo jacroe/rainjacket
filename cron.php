@@ -44,6 +44,7 @@ if (!empty($users))
 
 		$forecastData = json_decode($forecastData);
 
+		$data["user"] = $user["username"];
 		$data["forecast"] = $forecastData->processed->forecast;
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
