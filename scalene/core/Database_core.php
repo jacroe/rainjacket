@@ -64,6 +64,22 @@ class Database extends Core
 		$stmt->execute($newArray);
 	}
 
+	public function put($table, $array)
+	{
+		$structure = $this->query("SHOW INDEXES FROM $table WHERE Key_name = 'PRIMARY'");
+		$primaryColumn = $structure[0]['Column_name'];
+
+		if (array_key_exists($primaryColumn, $array))
+		{
+			if ($this->numRows($table, "`$primaryColumn` = '{$array[$primaryColumn]}'"))
+				$this->update($table, $array, "`$primaryColumn` = '{$array[$primaryColumn]}'");
+			else
+				$this->insert($table, $array);
+		}
+		else
+			$this->insert($table, $array);
+	}
+
 	public function delete($table, $where)
 	{
 		$query = "DELETE FROM `$table` WHERE $where";
