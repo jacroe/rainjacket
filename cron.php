@@ -36,7 +36,7 @@ if (!empty($users))
 		}
 		else
 		{
-			$forecast = $_->rainjacket->getForecast($location["lat"], $location["lng"], false);
+			$forecast = $_->rainjacket->getForecast($location["latitude"], $location["longitude"], false);
 			$data["isDay"] = false;
 		}
 
