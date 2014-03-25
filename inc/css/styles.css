@@ -1,1 +1,15 @@
-.rj-logo { font-family: "Pacifico", cursive; }
+table.rj-temperature>thead>tr>th,
+table.rj-temperature>tbody>tr>th,
+table.rj-temperature>tfoot>tr>th,
+table.rj-temperature>thead>tr>td,
+table.rj-temperature>tbody>tr>td,
+table.rj-temperature>tfoot>tr>td
+{
+  border-top: none;
+}
+
+.rj-logo { font-family: "Pacifico", cursive;}
+table.rj-temperature tr {text-align: center}
+table.rj-temperature tr.temps {font-size: 2em;}
+table.rj-temperature td {border-left: 1px solid #ccc;}
+table.rj-temperature td:first-child {border-left: none};
