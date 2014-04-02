@@ -42,15 +42,20 @@ if (!empty($users))
 		}
 		echo "done!\n";
 
-		$forecastData = json_decode($forecastData);
+		$forecastData = json_decode($forecastData, true);
 
 		$data["user"] = $user["username"];
-		$data["forecast"] = $forecastData->processed->forecast;
+		$data["forecast"] = $forecastData["processed"]["forecast"];
+		$data["lookingAhead"] = $forecastData["processed"]["lookingAhead"];
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
 
 		if ($user["sendBy"] == 1 or $user["sendBy"] == 3)
 		{
+			for ($i=1; $i < count($data["lookingAhead"]); $i++)
+				$data["lookingAhead"][$i]["time"] = $_->rainjacket->prettyTime($data["lookingAhead"][$i]["time"]);
+			$data["lookingAhead"][0]["time"] = "now";
+
 			$body = $_->view->fetch("email", $data);
 			echo "\tEmailing {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
 			$_->email->send($user["username"], $user["email"], "Forecast for Today", $body);
@@ -60,7 +65,7 @@ if (!empty($users))
 		if ($user["sendBy"] == 2 or $user["sendBy"] == 3)
 		{
 			echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
-			$_->twilio->sendText($user["phone"], $forecastData->processed->forecast);
+			$_->twilio->sendText($user["phone"], $forecastData["processed"]["forecast"]);
 			echo "done!\n";
 		}
 
@@ -68,7 +73,7 @@ if (!empty($users))
 		$_->database->put("forecasts", array(
 			"user"=>$user["username"],
 			"raw"=>$forecastData->raw,
-			"processed"=>json_encode($forecastData->processed)
+			"processed"=>json_encode($forecastData["processed"])
 		));
 		echo "done!\n";
 	}
