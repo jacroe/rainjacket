@@ -92,6 +92,8 @@
 					});
 				}
 			});
+			$('#sendTimeDay').timepicker({ 'timeFormat': 'g:iA', 'forceRoundTime': true });
+			$('#sendTimeNight').timepicker({ 'timeFormat': 'g:iA', 'forceRoundTime': true });
 		}
 	</script>
 {{include file="footer.tpl"}}
