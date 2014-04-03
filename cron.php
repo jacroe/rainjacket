@@ -72,7 +72,7 @@ if (!empty($users))
 		echo "\tStoring the data in the database...";
 		$_->database->put("forecasts", array(
 			"user"=>$user["username"],
-			"raw"=>$forecastData->raw,
+			"raw"=>$forecastData["raw"],
 			"processed"=>json_encode($forecastData["processed"])
 		));
 		echo "done!\n";
