@@ -4,7 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title></title>
 		<style>
-			body {background-color: #eee; font-size: 20px; font-family: Arial, sans-serif;}
+			body {background-color: #ccc; font-size: 20px; font-family: Arial, sans-serif;}
 			a, a:hover {color: #000; text-decoration: none; border-bottom: 1px dotted #000;}
 			table.rj-temperature tr {text-align: center}
 			table.rj-temperature tr.temps {font-size: 2em;}
