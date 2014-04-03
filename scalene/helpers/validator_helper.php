@@ -9,6 +9,17 @@ if (!function_exists("validate_date"))
 	}
 }
 
+if (!function_exists("validate_time"))
+{
+	function validate_time($time)
+	{
+		if (strtotime($time))
+			return true;
+		else
+			return false;
+	}
+}
+
 if (!function_exists("validate_email"))
 {
 	function validate_email($email)
