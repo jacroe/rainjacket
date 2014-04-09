@@ -1,6 +1,7 @@
 <?php
 require "scalene/Scalene.php";
 $_->load->model("rainjacket");
+$_->load->model("pollen");
 $_->load->model("twilio");
 $_->load->helper("strings");
 
@@ -51,8 +52,7 @@ if (!empty($users))
 		$data["state"] = $location["state"];
 
 		$data["includePollen"] = $user["pollenForecast"];
-		$pollen = $_->database->get("pollen", "`zipcode` = '{$location["zipcode"]}'");
-		$pollen = json_decode($pollen[0]["data"], true);
+		$pollen = $_->pollen->getForZipcode($location["zipcode"]);
 		$data["pollen"] = $pollen;
 		if ($user["pollenForecast"])
 			$forecastData["processed"]["pollen"] = $pollen;
