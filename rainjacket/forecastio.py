@@ -10,7 +10,6 @@ class Forecastio():
 		latitude, longitude = str(latitude), str(longitude)
 		self.__url = "https://api.forecast.io/forecast/" + apikey + "/" + latitude + "," + longitude
 
-		#db = MySQLdb.connect(host="localhost", user="root", passwd="#3n.7B", db="rainjacket")
 		cur = db.cursor()
 
 		cur.execute("SELECT * FROM forecastio WHERE `location` = %s LIMIT 1", latitude+","+longitude)
