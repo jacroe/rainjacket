@@ -1,18 +1,41 @@
-import json, requests
+import json, requests, MySQLdb
+from datetime import datetime, timedelta
+
+db = MySQLdb.connect(host="localhost", user="root", passwd="password", db="rainjacket")
 
 class Forecastio():
 	"""Get the latest data from Forecastio and create functions for handling it."""
 
 	def __init__(self, apikey, latitude, longitude):
-		"""Do the actual lookup and make sure we have a good request."""
-		self.__url = "https://api.forecast.io/forecast/" + apikey + "/" + str(latitude) + "," + str(longitude)
-		r = requests.get(self.__url)
+		latitude, longitude = str(latitude), str(longitude)
+		self.__url = "https://api.forecast.io/forecast/" + apikey + "/" + latitude + "," + longitude
 
-		if r.status_code is 200:
-			self.__forecastioData = r.json()
+		#db = MySQLdb.connect(host="localhost", user="root", passwd="#3n.7B", db="rainjacket")
+		cur = db.cursor()
+
+		cur.execute("SELECT * FROM forecastio WHERE `location` = %s LIMIT 1", latitude+","+longitude)
+
+		row = cur.fetchone()
+		if row is not None and row[2] > datetime.now():
+			self.__forecastioData = json.loads(unicode(row[1], "ISO-8859-1"))
 			self.__weGood = True
 		else:
-			self.__weGood = False
+			"""Do the actual lookup and make sure we have a good request."""
+			r = requests.get(self.__url)
+
+			if r.status_code is 200:
+				self.__forecastioData = r.json()
+				self.__weGood = True
+			else:
+				self.__weGood = False
+
+
+			"""Cache results until the next hour"""
+			if row is not None:
+				cur.execute("""UPDATE `forecastio` SET `data`=%s, `expires`=%s WHERE `location`=%s""", (r.text, (datetime.today() + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00"), latitude+","+longitude))
+			else:
+				cur.execute("""INSERT INTO `forecastio` (`data`, `expires`, `location`) VALUES (%s, %s, %s)""", (r.text, (datetime.today() + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00"), latitude+","+longitude))
+			cur.connection.commit()
 
 	def url(self):
 		"""Return the url we used."""
