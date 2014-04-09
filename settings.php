@@ -28,6 +28,7 @@ if ($_POST)
 			"timezone"=>$_POST["timezone"],
 			"dayTime"=>date_timezoneConvert($_POST["sendTimeDay"]." ".$_POST["timezone"]),
 			"nightTime"=>date_timezoneConvert($_POST["sendTimeNight"]." ".$_POST["timezone"]),
+			"pollenForecast"=>(int)$_POST["pollenForecast"],
 			"sendBy"=>$_POST["sendBy"]
 		), "username = '$user'");
 		$data["errors"][] = array("title"=>"Done!", "body"=>"Those settings were updated like a boss.", "type"=>"success");

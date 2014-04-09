@@ -50,6 +50,13 @@ if (!empty($users))
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
 
+		$data["includePollen"] = $user["pollenForecast"];
+		$pollen = $_->database->get("pollen", "`zipcode` = '{$location["zipcode"]}'");
+		$pollen = json_decode($pollen[0]["data"], true);
+		$data["pollen"] = $pollen;
+		if ($user["pollenForecast"])
+			$forecastData["processed"]["pollen"] = $pollen;
+
 		if ($user["sendBy"] == 1 or $user["sendBy"] == 3)
 		{
 			for ($i=1; $i < count($data["lookingAhead"]); $i++)

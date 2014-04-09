@@ -4,13 +4,18 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title></title>
 		<style>
-			body {background-color: #ccc; font-size: 20px; font-family: Arial, sans-serif;}
+			body {font-size: 20px; font-family: Arial, sans-serif;}
 			a, a:hover {color: #000; text-decoration: none; border-bottom: 1px dotted #000;}
-			table.rj-temperature tr {text-align: center}
-			table.rj-temperature tr.temps {font-size: 2em;}
-			table.rj-temperature td {border-left: 1px solid #ccc;}
-			table.rj-temperature td:first-child {border-left: none}
-			table.rj-temperature td img {display: inline}
+			table.rj-temperature tr, table.rj-pollen tr {text-align: center}
+			table.rj-temperature tr.temps, table.rj-pollen tr.levels {font-size: 2em;}
+			table.rj-temperature td, table.rj-pollen td {border-left: 1px solid #ccc;}
+			table.rj-temperature td:first-child, table.rj-pollen td:first-child {border-left: none}
+			table.rj-temperature td img, table.rj-pollen td img {display: inline}
+
+			.pollen-high, .pollen-med, .pollen-low {color:#fff; padding:5px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -khtml-border-radius: 10px;}
+			.pollen-high {background-color: #ea8078}
+			.pollen-med {background-color: #ea9924}
+			.pollen-low {background-color: #67c96c}
 		</style>
 	</head>
 	<body>
@@ -64,6 +69,26 @@
 								</table>
 							</td>
 						</tr>
+						{{if $includePollen}}
+						<tr>
+							<td align="center" valign="top">
+								<h1>Pollen counts</h1>
+								<table class="table rj-pollen">
+									<tbody>
+										<tr class="levels">
+					{{for $i=0 to ($pollen|@count -2)}}
+											<td><span class=pollen-{{$pollen[$i].word}}>{{$pollen[$i].word|upper}}</span></td>
+					{{/for}}
+										</tr>
+										<tr>
+										<td>TODAY</td>
+										<td>TOM.</td>
+										<td>NEXT DAY</td>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						{{/if}}
 						<tr>
 							<td align="center" valign="top">
 								<table border="0" cellspacing="0" width="100%" id="emailFooter">

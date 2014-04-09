@@ -1,16 +1,21 @@
-table.rj-temperature>thead>tr>th,
-table.rj-temperature>tbody>tr>th,
-table.rj-temperature>tfoot>tr>th,
-table.rj-temperature>thead>tr>td,
-table.rj-temperature>tbody>tr>td,
-table.rj-temperature>tfoot>tr>td
+table.rj-table>thead>tr>th,
+table.rj-table>tbody>tr>th,
+table.rj-table>tfoot>tr>th,
+table.rj-table>thead>tr>td,
+table.rj-table>tbody>tr>td,
+table.rj-table>tfoot>tr>td
 {
   border-top: none;
 }
 
 .rj-logo { font-family: "Pacifico", cursive;}
-table.rj-temperature tr {text-align: center}
-table.rj-temperature tr.temps {font-size: 2em;}
-table.rj-temperature td {border-left: 1px solid #ccc;}
-table.rj-temperature td:first-child {border-left: none}
-table.rj-temperature td img {display: inline}
+table.rj-temperature tr, table.rj-pollen tr {text-align: center}
+table.rj-temperature tr.temps, table.rj-pollen tr.levels {font-size: 2em;}
+table.rj-temperature td, table.rj-pollen td {border-left: 1px solid #ccc;}
+table.rj-temperature td:first-child, table.rj-pollen td:first-child {border-left: none}
+table.rj-temperature td img, table.rj-pollen td img {display: inline}
+
+.pollen-high, .pollen-med, .pollen-low {color:#fff; padding:5px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -khtml-border-radius: 10px;}
+.pollen-high {background-color: #ea8078}
+.pollen-med {background-color: #ea9924}
+.pollen-low {background-color: #67c96c}

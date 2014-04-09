@@ -55,6 +55,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="pollenForecast" class="col-sm-4 control-label">Include a pollen forecast? </label>
+					<div class="col-sm-8">
+						<input type="radio" name="pollenForecast" value=1{{if $user.pollenForecast == 1}} checked{{/if}}> Yes, please <input type="radio" name="pollenForecast" value=0{{if $user.pollenForecast == 0}} checked{{/if}}> No, thanks
+					</div>
+				</div>
+				<div class="form-group">
 					<label for="sendBy" class="col-sm-4 control-label">Send your forecast by </label>
 					<div class="col-sm-8">
 						<select class="form-control" name="sendBy" id="sendBy">

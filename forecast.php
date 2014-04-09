@@ -3,12 +3,13 @@ require "scalene/Scalene.php";
 
 if (!array_key_exists("user", $_GET))
 	header("Location: index.php");
-if (!$_->database->numRows("users", "`username` = '{$_GET["user"]}'"))
+$user = $_GET["user"];
+if (!$_->database->numRows("users", "`username` = '$user'"))
 	header("Location: index.php");
 
 $_->load->model("rainjacket");
 
-$rows = $_->database->get("forecasts", "`user` = '{$_GET["user"]}'");
+$rows = $_->database->get("forecasts", "`user` = '$user'");
 $data = json_decode($rows[0]["processed"], true);
 for ($i=0; $i < count($data["lookingAhead"]); $i++)
 	$data["lookingAhead"][$i]["time"] = $_->rainjacket->prettyTime($data["lookingAhead"][$i]["time"]);

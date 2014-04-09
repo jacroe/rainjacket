@@ -28,7 +28,7 @@
 				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 				<strong>Some title</strong> - Some text
 			</div>-->
-			<table class="table rj-temperature">
+			<table class="table rj-table rj-temperature">
 				<tbody>
 					<tr>
 {{for $i=0 to ($data.lookingAhead|@count - 1)}}
@@ -47,6 +47,22 @@
 					</tr>
 				</tbody>
 			</table>
+{{if $data.pollen}}
+			<h1>Pollen levels</h1>
+			<table class="table rj-table rj-pollen">
+				<tbody>
+					<tr class="levels">
+{{for $i=0 to ($data.pollen|@count -2)}}
+						<td><span class=pollen-{{$data.pollen[$i].word}}>{{$data.pollen[$i].word|upper}}</span></td>
+{{/for}}
+					</tr>
+					<tr>
+					<td>TODAY</td>
+					<td>TOM.</td>
+					<td>NEXT DAY</td>
+				</tbody>
+			</table>
+{{/if}}
 		</div>
 	</div>
 {{include file="footer.tpl"}}
