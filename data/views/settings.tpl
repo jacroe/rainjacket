@@ -8,6 +8,12 @@
 				<strong>{{$error.title}}</strong> - {{$error.body}}
 			</div>
 {{/foreach}}
+{{foreach $infos as $info}}
+			<div class="alert alert-{{if $info.type}}{{$info.type}}{{else}}danger{{/if}} alert-dismissable">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<strong>{{$info.title}}</strong> - {{$info.body}}
+			</div>
+{{/foreach}}
 			<form class="form-horizontal" role="form" method="POST">
 				<div class="form-group">
 					<label for="email" class="col-sm-4 control-label">Your email is </label>

@@ -17,7 +17,15 @@ if ($_POST)
 		$data["errors"][] = array("title"=>"Times can't be empty", "body"=>"Please enter a time for both fields.");
 	if (!validate_time($_POST["sendTimeDay"]) || !validate_time($_POST["sendTimeNight"]))
 		$data["errors"][] = array("title"=>"Times are invalid", "body"=>"Please enter a valid time for both fields.");
-	if (!validate_phone($_POST["phone"]))
+	if (!$_POST["phone"])
+	{
+		if ($_POST["sendBy"] == 2 or $_POST["sendBy"] == 3)
+		{
+			$_POST["sendBy"] = 1;
+			$data["infos"][] = array("title"=>"No phone number entered", "body"=>"Since you didn't enter a phone number, we can only send your forecast by email.", "type"=>"info");
+		}
+	}
+	elseif (!validate_phone($_POST["phone"]))
 		$data["errors"][] = array("title"=>"Phone number invalid", "body"=>"Please enter a valid phone number.");
 	if (empty($data["errors"]))
 	{
@@ -31,7 +39,7 @@ if ($_POST)
 			"pollenForecast"=>(int)$_POST["pollenForecast"],
 			"sendBy"=>$_POST["sendBy"]
 		), "username = '$user'");
-		$data["errors"][] = array("title"=>"Done!", "body"=>"Those settings were updated like a boss.", "type"=>"success");
+		$data["infos"][] = array("title"=>"Done!", "body"=>"Those settings were updated like a boss.", "type"=>"success");
 	}
 }
 
