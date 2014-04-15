@@ -57,7 +57,7 @@ class Rainjacket extends Model
 
 			$replace["endPrecipTime"] = $this->prettyTime($dataJson->precipitation->endTime);
 
-			$template = $this->_getTemplate($isDay, (boolean)$dataJson->precipitation->start->chance, (boolean)$dataJson->precipitation->endTime);
+			$template = $this->_getTemplate($isDay, true, (boolean)$dataJson->precipitation->endTime);
 		}
 		else
 			$template = $this->_getTemplate($isDay, false, false);
