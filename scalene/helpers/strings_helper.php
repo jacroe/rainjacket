@@ -2,8 +2,11 @@
 
 if (!function_exists("pluralize"))
 {
-	function pluralize($count, $singlular, $plural)
+	function pluralize($count, $singlular, $plural = null)
 	{
-		return ($count == 1) ? $singlular : $plural;
+		if ($plural)
+			return ($count == 1) ? $singlular : $plural;
+		else
+			return ($count == 1) ? $singlular : $singlular."s";
 	}
 }
