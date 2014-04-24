@@ -73,6 +73,22 @@ def crunchChanceOfRain(hourlyData):
 			endTime=endTime
 			)
 
+def crunchWindSpeed(hourlyData):
+	tomorrow = datetime.combine(date.today(), time.min) + timedelta(days=1)
+	topWindSpeed = 0
+	for i in range(0, len(hourlyData)):
+		curHour = hourlyData[i]
+
+		# If we're looking at tomorrow, break
+		if datetime.fromtimestamp(int(curHour["time"])) >= tomorrow:
+			break
+
+		if curHour["windSpeed"] > topWindSpeed:
+			topWindSpeed = curHour["windSpeed"]
+
+	topWindSpeed = int(round(topWindSpeed))
+	return topWindSpeed
+
 def crunchLookingAhead(hourlyData):
 	icons = {"clear-day" : "sunny", "clear-night" : "sunny", "rain" : "rain", "snow" : "snow", "sleet" : "sleet", "wind" : "windy", "fog" : "fog", "cloudy" : "cloudy", "partly-cloudy-day" : "mostlysunny", "partly-cloudy-night" : "mostlysunny"}
 

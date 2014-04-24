@@ -26,9 +26,10 @@ if not f.weGood():
 dictHighsLows = crunchHighsLows(f.getHourlyData())
 dictPrecip = crunchChanceOfRain(f.getHourlyData())
 dictLookingAhead = crunchLookingAhead(f.getHourlyData())
+intWind = crunchWindSpeed(f.getHourlyData())
 
 """Form a new dict with the aforementioned crunched data."""
-dataDict = dict(temp=dictHighsLows, precipitation=dictPrecip, lookingAhead=dictLookingAhead)
+dataDict = dict(temp=dictHighsLows, precipitation=dictPrecip, wind=intWind, lookingAhead=dictLookingAhead)
 
 """Convert to JSON and print."""
 print json.dumps(dataDict)

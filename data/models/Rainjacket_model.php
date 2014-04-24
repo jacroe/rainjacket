@@ -36,6 +36,7 @@ class Rainjacket extends Model
 		$dataJson = json_decode(exec("python ".BASE_PATH."/rainjacket/rainjacket.py $lat $long"));
 
 		$returnData["processed"]["lookingAhead"] = $dataJson->lookingAhead;
+		$returnData["processed"]["wind"] = $this->_prettyWind($dataJson->wind);
 		$returnData["raw"] = json_encode($dataJson);
 
 		if ($isDay)
@@ -196,5 +197,19 @@ class Rainjacket extends Model
 			return " a chance of";
 		else
 			return " a slight chance of ";
+	}
+
+	private function _prettyWind($wind)
+	{
+		// Not even gonna lie, totally ripped this straight from Poncho
+
+		if ($wind < 5)
+			return "The perfect day ($wind MPH)";
+		elseif ($wind < 11)
+			return "Gone with the breeze ($wind MPH)";
+		elseif ($wind < 14)
+			return "Wind, wind, go away! ($wind MPH)";
+		else
+			return "We're not in Kansas anymore! ($wind MPH)";
 	}
 }

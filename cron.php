@@ -48,6 +48,7 @@ if (!empty($users))
 		$data["user"] = $user["username"];
 		$data["forecast"] = $forecastData["processed"]["forecast"];
 		$data["lookingAhead"] = $forecastData["processed"]["lookingAhead"];
+		$data["wind"] = $forecastData["processed"]["wind"];
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
 

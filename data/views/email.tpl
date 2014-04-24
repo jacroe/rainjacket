@@ -16,6 +16,9 @@
 			.pollen-high {background-color: #ea8078}
 			.pollen-med {background-color: #ea9924}
 			.pollen-low {background-color: #67c96c}
+
+			.windSpeed {text-align: center; font-size: 1.7em}
+			.windSpeed span {background-color: #80BEC7; padding:5px;}
 		</style>
 	</head>
 	<body>
@@ -89,6 +92,12 @@
 							</td>
 						</tr>
 						{{/if}}
+						<tr>
+							<td align="center" valign="top">
+								<h1>Wind speed</h1>
+								<p class="windSpeed"><span>{{$wind}}</span></p>
+							</td>
+						</tr>
 						<tr>
 							<td align="center" valign="top">
 								<table border="0" cellspacing="0" width="100%" id="emailFooter">

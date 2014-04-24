@@ -63,6 +63,8 @@
 				</tbody>
 			</table>
 {{/if}}
+			<h1>Wind speed</h1>
+			<p class="windSpeed"><span>{{$data.wind}}</span></p>
 		</div>
 	</div>
 {{include file="footer.tpl"}}

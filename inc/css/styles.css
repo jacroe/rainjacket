@@ -19,3 +19,6 @@ table.rj-temperature td img, table.rj-pollen td img {display: inline}
 .pollen-high {background-color: #ea8078}
 .pollen-med {background-color: #ea9924}
 .pollen-low {background-color: #67c96c}
+
+.windSpeed {text-align: center; font-size: 1.7em}
+.windSpeed span {background-color: #80BEC7; padding:5px;}
