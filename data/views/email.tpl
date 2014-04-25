@@ -18,7 +18,7 @@
 			.pollen-low {background-color: #67c96c}
 
 			.windSpeed {text-align: center; font-size: 1.7em}
-			.windSpeed span {background-color: #80BEC7; padding:5px;}
+			.windSpeed span {background-color: #80BEC7; padding:5px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -khtml-border-radius: 10px;}
 		</style>
 	</head>
 	<body>
