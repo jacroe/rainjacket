@@ -6,6 +6,9 @@ if (!array_key_exists("user", $_GET))
 $user = $_GET["user"];
 if (!$_->database->numRows("users", "`username` = '$user'"))
 	header("Location: index.php");
+$userData = $_->database->get("users", "`username` = '$user'");
+$userData = $userData[0];
+date_default_timezone_set($userData["timezone"]);
 
 $_->load->model("rainjacket");
 
