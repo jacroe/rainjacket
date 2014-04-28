@@ -31,7 +31,7 @@ class Users extends Core
 	{
 		if ($this->userLoggedIn())
 		{
-			$user = $this->database->get("users", "`username` = '{$_SESSION["user"]}'");
+			$user = $this->database->get($this->dbtable, "`username` = '{$_SESSION["user"]}'");
 			unset($user[0]["password"]);
 			return $user[0];
 		}
