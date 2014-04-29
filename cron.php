@@ -76,6 +76,13 @@ if (!empty($users))
 			echo "\tTexting {$user["username"]} their forecast for {$location["city"]}, {$location["state"]}...";
 			$_->twilio->sendText($user["phone"], $forecastData["processed"]["forecast"]);
 			echo "done!\n";
+			if ($data["alerts"])
+			{
+				sleep(1); // Ensure that forecast arrives first
+				echo "\tAlerts issued for customer. Sending second text warning them...";
+				$_->twilio->sendText($user["phone"], "Oh, weather alerts have been issued for your area, as well. | therainjacket.com/forecast.php?user={$user["username"]}");
+				echo "done!\n";
+			}
 		}
 
 		echo "\tStoring the data in the database...";
