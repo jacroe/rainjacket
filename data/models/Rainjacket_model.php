@@ -37,6 +37,7 @@ class Rainjacket extends Model
 
 		$returnData["processed"]["lookingAhead"] = $dataJson->lookingAhead;
 		$returnData["processed"]["wind"] = $this->_prettyWind($dataJson->wind);
+		$returnData["processed"]["alerts"] = $this->_prettyAlerts($dataJson->alerts);
 		$returnData["raw"] = json_encode($dataJson);
 
 		if ($isDay)
@@ -211,5 +212,23 @@ class Rainjacket extends Model
 			return "Wind, wind, go away! ($wind MPH)";
 		else
 			return "We're not in Kansas anymore! ($wind MPH)";
+	}
+
+	private function _prettyAlerts($alerts)
+	{
+		if ($alerts)
+		{
+			foreach($alerts as $alert)
+			{
+				$alert->time = date('M jS \a\t g:iA', $alert->time);
+				$alert->expires = date('M jS \a\t g:iA', $alert->expires);
+				$formattedAlerts[] = $alert;
+			}
+
+			return $formattedAlerts;
+		}
+		else
+			return null;
+
 	}
 }

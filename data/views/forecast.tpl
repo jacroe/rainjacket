@@ -47,6 +47,12 @@
 					</tr>
 				</tbody>
 			</table>
+{{if $data.alerts}}
+			<h1>Weather alerts</h1>
+{{foreach $data.alerts as $alert}}
+				<p><a href={{$alert.uri}} target=_blank>{{$alert.title}}</a> - Expires {{$alert.expires}}</p>
+{{/foreach}}
+{{/if}}
 {{if $data.pollen}}
 			<h1>Pollen levels</h1>
 			<table class="table rj-table rj-pollen">

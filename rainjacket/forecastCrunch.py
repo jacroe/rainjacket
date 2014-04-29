@@ -98,3 +98,12 @@ def crunchLookingAhead(hourlyData):
 	data.append( dict(condition=hourlyData[8]["summary"], image=icons[hourlyData[8]["icon"]], temp=int(round(hourlyData[8]["temperature"])), time=hourlyData[8]["time"]) )
 
 	return data
+
+def crunchAlerts(alertData):
+	if alertData is not False:
+		data = list()
+		for i in range(0, len(alertData)):
+			data.append( dict(expires=alertData[i]["expires"], title=alertData[i]["title"], uri=alertData[i]["uri"], time=alertData[i]["time"]))
+		return data
+	else:
+		return None

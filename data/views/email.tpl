@@ -49,6 +49,16 @@
 								</table>
 							</td>
 						</tr>
+						{{if $alerts}}
+						<tr>
+							<td align="center" valign="top">
+								<h1>Weather Alerts</h1>
+					{{foreach $alerts as $alert}}
+									<p><a href={{$alert.uri}} target=_blank>{{$alert.title}}</a> - Expires {{$alert.expires}}</p>
+					{{/foreach}}
+							</td>
+						</tr>
+						{{/if}}
 						<tr>
 							<td align="center" valign="top">
 								<table class="table rj-temperature">
