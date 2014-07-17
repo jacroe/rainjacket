@@ -3,5 +3,7 @@ data/views_c/
 scalene/config.php
 scalene/extlib/composer/
 rainjacket/apikey
+passwords.txt
+test.php
 
 *.sublime*
