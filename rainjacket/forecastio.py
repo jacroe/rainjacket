@@ -20,21 +20,23 @@ class Forecastio():
 			self.__weGood = True
 		else:
 			"""Do the actual lookup and make sure we have a good request."""
-			r = requests.get(self.__url)
+			try:
+				r = requests.get(self.__url)
 
-			if r.status_code is 200:
-				self.__forecastioData = r.json()
-				self.__weGood = True
-			else:
+				if r.status_code is 200:
+					self.__forecastioData = r.json()
+					self.__weGood = True
+
+					"""Cache results until the next hour"""
+					if row is not None:
+						cur.execute("""UPDATE `forecastio` SET `data`=%s, `expires`=%s WHERE `location`=%s""", (r.text, (datetime.today() + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00"), latitude+","+longitude))
+					else:
+						cur.execute("""INSERT INTO `forecastio` (`data`, `expires`, `location`) VALUES (%s, %s, %s)""", (r.text, (datetime.today() + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00"), latitude+","+longitude))
+					cur.connection.commit()
+				else:
+					self.__weGood = False
+			except:
 				self.__weGood = False
-
-
-			"""Cache results until the next hour"""
-			if row is not None:
-				cur.execute("""UPDATE `forecastio` SET `data`=%s, `expires`=%s WHERE `location`=%s""", (r.text, (datetime.today() + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00"), latitude+","+longitude))
-			else:
-				cur.execute("""INSERT INTO `forecastio` (`data`, `expires`, `location`) VALUES (%s, %s, %s)""", (r.text, (datetime.today() + timedelta(hours=1)).strftime("%Y-%m-%d %H:00:00"), latitude+","+longitude))
-			cur.connection.commit()
 
 	def url(self):
 		"""Return the url we used."""

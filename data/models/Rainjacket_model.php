@@ -33,7 +33,15 @@ class Rainjacket extends Model
 	 */
 	public function getForecast($lat, $long, $isDay = true)
 	{
-		$dataJson = json_decode(exec("python ".BASE_PATH."/rainjacket/rainjacket.py $lat $long"));
+		$data = exec("python ".BASE_PATH."/rainjacket/rainjacket.py $lat $long");
+		while(strpos($data, "Could not get Forecast.io data.") !== false)
+		{
+			sleep(3);
+			$data = exec("python ".BASE_PATH."/rainjacket/rainjacket.py $lat $long");
+		}
+
+		$dataJson = json_decode($data);
+
 
 		$returnData["processed"]["lookingAhead"] = $dataJson->lookingAhead;
 		$returnData["processed"]["wind"] = $this->_prettyWind($dataJson->wind);
