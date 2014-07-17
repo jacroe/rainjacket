@@ -36,6 +36,7 @@ if ($_POST)
 			"timezone"=>$_POST["timezone"],
 			"dayTime"=>date_timezoneConvert($_POST["sendTimeDay"]." ".$_POST["timezone"]),
 			"nightTime"=>date_timezoneConvert($_POST["sendTimeNight"]." ".$_POST["timezone"]),
+			"badHairDay"=>(int)$_POST["badHairDay"],
 			"pollenForecast"=>(int)$_POST["pollenForecast"],
 			"sendBy"=>$_POST["sendBy"]
 		), "username = '$user'");

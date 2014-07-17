@@ -110,6 +110,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `dayTime` char(4) NOT NULL,
   `nightTime` char(4) NOT NULL,
   `pollenForecast` tinyint(1) NOT NULL DEFAULT '0',
+  `badHairDay` tinyint(1) NOT NULL DEFAULT '0',
   `sendBy` int(11) NOT NULL DEFAULT '1',
   `timeAdded` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

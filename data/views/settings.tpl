@@ -61,6 +61,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="badHairDay" class="col-sm-4 control-label">Care about your hair? </label>
+					<div class="col-sm-8">
+						<input type="radio" name="badHairDay" value=1{{if $user.badHairDay == 1}} checked{{/if}}> Sure do! <input type="radio" name="badHairDay" value=0{{if $user.badHairDay == 0}} checked{{/if}}> Not really
+					</div>
+				</div>
+				<div class="form-group">
 					<label for="pollenForecast" class="col-sm-4 control-label">Include a pollen forecast? </label>
 					<div class="col-sm-8">
 						<input type="radio" name="pollenForecast" value=1{{if $user.pollenForecast == 1}} checked{{/if}}> Yes, please <input type="radio" name="pollenForecast" value=0{{if $user.pollenForecast == 0}} checked{{/if}}> No, thanks

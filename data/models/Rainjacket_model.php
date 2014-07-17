@@ -45,6 +45,7 @@ class Rainjacket extends Model
 
 		$returnData["processed"]["lookingAhead"] = $dataJson->lookingAhead;
 		$returnData["processed"]["wind"] = $this->_prettyWind($dataJson->wind);
+		$returnData["processed"]["badHairDay"] = $this->_badHairDay($dataJson->wind, $dataJson->humidity);
 		$returnData["processed"]["alerts"] = $this->_prettyAlerts($dataJson->alerts);
 		$returnData["raw"] = json_encode($dataJson);
 
@@ -238,5 +239,17 @@ class Rainjacket extends Model
 		else
 			return null;
 
+	}
+
+	private function _badHairDay($wind, $humidity)
+	{
+		if ($wind > 10 and $humidity >= 70)
+			return "Double Whammy! Frizzy and Windblown";
+		elseif ($wind > 10)
+			return "Windblown";
+		elseif ($humidity >= 70)
+			return "Frizzy";
+		else
+			return false;
 	}
 }

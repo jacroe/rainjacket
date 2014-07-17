@@ -28,9 +28,10 @@ dictPrecip = crunchChanceOfRain(f.getHourlyData())
 dictLookingAhead = crunchLookingAhead(f.getHourlyData())
 dictAlerts = crunchAlerts(f.getAlerts())
 intWind = crunchWindSpeed(f.getHourlyData())
+intHumidity = int(f.getHourlyData()[0]["humidity"]*100)
 
 """Form a new dict with the aforementioned crunched data."""
-dataDict = dict(temp=dictHighsLows, precipitation=dictPrecip, wind=intWind, lookingAhead=dictLookingAhead, alerts=dictAlerts)
+dataDict = dict(temp=dictHighsLows, precipitation=dictPrecip, wind=intWind, humidity=intHumidity, lookingAhead=dictLookingAhead, alerts=dictAlerts)
 
 """Convert to JSON and print."""
 print json.dumps(dataDict)

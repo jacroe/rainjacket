@@ -17,8 +17,10 @@
 			.pollen-med {background-color: #ea9924}
 			.pollen-low {background-color: #67c96c}
 
-			.windSpeed {text-align: center; font-size: 1.7em}
-			.windSpeed span {background-color: #80BEC7; padding:5px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -khtml-border-radius: 10px;}
+			.windSpeed, .badHairDay {text-align: center; font-size: 1.7em}
+			.windSpeed span, .badHairDay span {padding:5px; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; -khtml-border-radius: 10px;}
+			.windSpeed span {background-color: #80BEC7;}
+			.badHairDay span {background-color: #ea8078;}
 		</style>
 	</head>
 	<body>
@@ -82,6 +84,14 @@
 								</table>
 							</td>
 						</tr>
+						{{if $includeBadHairDay}}
+						<tr>
+							<td align="center" valign="top">
+								<h1>Hair forecast</h1>
+								<p class="badHairDay"><span>{{$badHairDay}}</span></p>
+							</td>
+						</tr>
+						{{/if}}
 						{{if $includePollen}}
 						<tr>
 							<td align="center" valign="top">

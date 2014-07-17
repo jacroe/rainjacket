@@ -53,6 +53,10 @@
 				<p><a href={{$alert.uri}} target=_blank>{{$alert.title}}</a> - Expires {{$alert.expires}}</p>
 {{/foreach}}
 {{/if}}
+{{if $data.badHairDay}}
+		<h1>Hair Forecast</h1>
+			<p class="badHairDay"><span>{{$data.badHairDay}}</span></p>
+{{/if}}
 {{if $data.pollen}}
 			<h1>Pollen levels</h1>
 			<table class="table rj-table rj-pollen">

@@ -50,6 +50,7 @@ if (!empty($users))
 		$data["lookingAhead"] = $forecastData["processed"]["lookingAhead"];
 		$data["wind"] = $forecastData["processed"]["wind"];
 		$data["alerts"] = $forecastData["processed"]["alerts"];
+		$data["badHairDay"] = $forecastData["processed"]["badHairDay"];
 		$data["city"] = $location["city"];
 		$data["state"] = $location["state"];
 
@@ -58,6 +59,8 @@ if (!empty($users))
 		$data["pollen"] = $pollen;
 		if ($user["pollenForecast"])
 			$forecastData["processed"]["pollen"] = $pollen;
+
+		$data["includeBadHairDay"] = $user["badHairDay"];
 
 		if ($user["sendBy"] == 1 or $user["sendBy"] == 3)
 		{
@@ -81,6 +84,12 @@ if (!empty($users))
 				sleep(1); // Ensure that forecast arrives first
 				echo "\tAlerts issued for customer. Sending second text warning them...";
 				$_->twilio->sendText($user["phone"], "Oh, weather alerts have been issued for your area, as well. | therainjacket.com/forecast.php?user={$user["username"]}");
+				echo "done!\n";
+			}
+			if ($data["includeBadHairDay"] and $data["badHairDay"])
+			{
+				echo "\tCustomer wanted hair forecast. Sending text...";
+				$_->twilio->sendText($user["phone"], "Bad hair day! {$data["badHairDay"]} hair threatens you!");
 				echo "done!\n";
 			}
 		}
