@@ -84,7 +84,7 @@
 								</table>
 							</td>
 						</tr>
-						{{if $includeBadHairDay}}
+						{{if $includeBadHairDay and $badHairDay}}
 						<tr>
 							<td align="center" valign="top">
 								<h1>Hair forecast</h1>
